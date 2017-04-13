@@ -3,11 +3,15 @@ var ReactDOM=require("react-dom");
 var routeObj=require("react-router");
 var Router=routeObj.Router;
 var hashHistory=routeObj.hashHistory;
+var Header=require('./Common/Header/Header.jsx');
+var Slider=require('./Common/Slider/Slider.jsx');
 
 class App extends React.Component{
     render(){
         return(
-            <div>
+            <div className="default-layout-transparent mdl-layout mdl-js-layout">
+                <Header/>
+                <Slider/>
                 {this.props.children}
             </div>
         )
