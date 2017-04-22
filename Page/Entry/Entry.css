@@ -1,0 +1,21 @@
+.background{
+    background: url('./static/login_back.png') center;
+    background-size: cover;
+}
+
+@media screen and (max-width: 992px){
+    .background{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media screen and (min-width: 992px){
+    .box{
+        position: absolute;
+        top: 25.3%;
+        right: 5%;
+    }
+}

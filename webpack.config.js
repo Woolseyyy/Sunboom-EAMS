@@ -17,7 +17,7 @@ module.exports = {
     		exclude:/node_modules/
     	}, {
     		test: /\.css$/,
-    		loader: 'style-loader!css-loader'
+    		loader: 'style-loader!css-loader?modules'
     	}, { 
     		test: /\.(png|jpg|svg|gif|eot|woff|ttf)$/, 
     		loader: 'url-loader?limit=25000' 
@@ -26,7 +26,6 @@ module.exports = {
 	externals: {
 		"react": 'React',
 		"react-dom": 'ReactDOM',
-		"react-router": 'ReactRouter',
-		"material-design-lite": 'MaterialDesignLite'
+		"react-router": 'ReactRouter'
 	}
 };
