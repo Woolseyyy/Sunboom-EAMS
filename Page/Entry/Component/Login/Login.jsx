@@ -7,10 +7,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-var injectTapEventPlugin = require("react-tap-event-plugin");
-injectTapEventPlugin();
-
-export default class LoginForm extends Component {
+class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -54,3 +51,5 @@ export default class LoginForm extends Component {
         );
     }
 }
+
+module.exports = LoginForm;

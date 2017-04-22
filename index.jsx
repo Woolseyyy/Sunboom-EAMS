@@ -5,15 +5,16 @@ var Router=routeObj.Router;
 var hashHistory=routeObj.hashHistory;
 var Header=require('./Common/Header/Header.jsx');
 var Slider=require('./Common/Slider/Slider.jsx');
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends React.Component{
     render(){
         return(
-            <div className="default-layout-transparent mdl-layout mdl-js-layout">
-                <Header/>
-                <Slider/>
-                {this.props.children}
-            </div>
+            <MuiThemeProvider>
+                <div className="default-layout-transparent mdl-layout mdl-js-layout">
+                    {this.props.children}
+                </div>
+            </MuiThemeProvider>
         )
     }
 }
