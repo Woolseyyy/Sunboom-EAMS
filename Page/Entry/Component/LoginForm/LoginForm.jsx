@@ -10,7 +10,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 class LoginForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {value:1};
+        this.state = {};
         this.handleFieldSelect = this.handleFieldSelect.bind(this);
         this.LoginFormSubmit = this.LoginFormSubmit.bind(this);
     }
@@ -44,16 +44,19 @@ class LoginForm extends Component {
         };
         var h1Style={
             position:"absolute",
-            fontSize: "24px",
+            fontSize: "20px",
             color: "#4A4A4A",
             textAlign: "center",
-            width:"197px"
+            width:"197px",
+            lineHeight:'75px',
+            marginTop: '0px',
+            marginBottom:'0px'
         };
         return (
             <div style={style}>
                 <div style={{height: '75px'}}>
                     <img src={require("./static/logo.png")} style={logoStyle}/>
-                    <h1 style={h1Style}>Sanbon 教务系统</h1>
+                    <h1 style={h1Style}>Sunboom 教务系统</h1>
                 </div>
 
                 <TextField ref='usrname' hintText="请输入用户名" floatingLabelText="请输入用户名" style={{verticalAlign: 'bottom', width: '60%'}}/>
@@ -76,7 +79,7 @@ class LoginForm extends Component {
                             labelColor="#ffffff"
                             backgroundColor="#757575"
                             style={{width: '100%'}}
-                            onClick={this.LoginFormSubmit}/>
+                            onTouchTap={this.LoginFormSubmit}/>
                     </div>
             </div>
         );

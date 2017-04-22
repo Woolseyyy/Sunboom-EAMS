@@ -23,9 +23,9 @@ module.exports = {
     		loader: 'url-loader?limit=25000' 
     	}]
     },
-	externals: {
+	/*externals: {
 		"react": 'React',
 		"react-dom": 'ReactDOM',
 		"react-router": 'ReactRouter'
-	}
+	}*/
 };
