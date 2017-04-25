@@ -2,6 +2,7 @@ var React=require("react");
 var style=require("./Admin.css");
 //var Helmet=require("react-helmet");
 import Slider from "../../Common/Slider/Slider.jsx";
+import Header from "../../Common/Header/Header.jsx"
 
 //material-ui
 import Paper from 'material-ui/Paper';
@@ -27,6 +28,7 @@ class Entry extends React.Component{
         ];
         return(
             <div className="background">
+                <Header/>
                 <Slider defaultValue={this.state.selectID}
                         beforeDeviderItems={beforeDeviderItems}
                         afterDeviderItems={afterDeviderItems}
@@ -35,6 +37,7 @@ class Entry extends React.Component{
                 <Paper zDepth={1} className="main">
                     {this.state.selectID}
                 </Paper>
+
             </div>
         )
     }

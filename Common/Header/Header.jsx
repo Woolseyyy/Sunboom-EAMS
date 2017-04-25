@@ -1,41 +1,40 @@
-var React=require("react");
-var style=require("./Header.css");
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 //var Helmet=require("react-helmet");
+import css from "./Header.css"
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import {grey900} from 'material-ui/styles/colors';
 
-class Header extends React.Component{
+class Header extends Component{
     constructor(props) {
         super(props);
         this.state = {
         };
     }
-    componentDidMount(){
-
-    }
     render(){
+        var barStyle={
+            position: "fixed",
+            height : "64px",
+            background: "#F9F3F3",
+            boxShadow: "0 0 4px 0 rgba(0,0,0,0.12), 0 3px 8px 0 rgba(0,0,0,0.24)",
+            color:"#000000"
+        };
+        var titleStyle={
+            color:"#000000",
+            fontSize:"20px",
+            lineHeight:"64px",
+            marginLeft: "30px"
+        };
         return(
-            <header className="mdl-layout__header mdl-layout__header--transparent">
-                <div className="mdl-layout__header-row">
-                    <span className="mdl-layout-title">Sunboom 教务系统</span>
-                    <div className="mdl-layout-spacer"></div>
-                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-                  mdl-textfield--floating-label mdl-textfield--align-right">
-                        <label className="mdl-button mdl-js-button mdl-button--icon"
-                               for="fixed-header-drawer-exp">
-                            <i className="material-icons">search</i>
-                        </label>
-                        <div className="mdl-textfield__expandable-holder">
-                            <input className="mdl-textfield__input" type="text" name="sample"
-                                   id="fixed-header-drawer-exp"/>
-                        </div>
-                    </div>
-                    <nav className="mdl-navigation">
-                        <a className="mdl-navigation__link" href="">学校新闻</a>
-                        <a className="mdl-navigation__link" href="">校园通知</a>
-                        <a className="mdl-navigation__link" href="">CC98</a>
-                        <a className="mdl-navigation__link" href="">考试园地</a>
-                    </nav>
-                </div>
-            </header>
+            <AppBar
+                style={barStyle}
+                title="SunBoom-教育管理系统"
+                titleStyle={titleStyle}
+                iconElementLeft = {<IconButton><NavigationMenu color={grey900}/></IconButton>}
+                iconStyleLeft = {{display :"none"}}
+            />
         )
     }
 }
