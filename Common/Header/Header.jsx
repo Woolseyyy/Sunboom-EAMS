@@ -19,7 +19,8 @@ class Header extends Component{
             height : "64px",
             background: "#F9F3F3",
             boxShadow: "0 0 4px 0 rgba(0,0,0,0.12), 0 3px 8px 0 rgba(0,0,0,0.24)",
-            color:"#000000"
+            color:"#000000",
+            top: 0
         };
         var titleStyle={
             color:"#000000",

@@ -7,9 +7,9 @@ import css from "./Slider.css"
 // Material-UI
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import BookMark from '../../node_modules/material-ui/svg-icons/action/bookmark';
-import Done from '../../node_modules/material-ui/svg-icons/action/done';
-import Error from '../../node_modules/material-ui/svg-icons/alert/error';
+import BookMark from 'material-ui/svg-icons/action/bookmark';
+import Done from 'material-ui/svg-icons/action/done';
+import Error from 'material-ui/svg-icons/alert/error';
 
 let SelectableList = makeSelectable(List);
 
