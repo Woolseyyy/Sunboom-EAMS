@@ -29,7 +29,8 @@ var rootRoute={
         component:App,
         indexRoute:require("./Page/Entry"),
         childRoutes:[
-            require("./Page/Entry")
+            require("./Page/Entry"),
+            require("./Page/Admin")
         ]
     }]
 };

@@ -5,3 +5,10 @@
     left: 0;
     right: 0;
 }
+:global(.main){
+    margin-left: 390px;
+    margin-right: 20px;
+    margin-top: 10px;
+    background: #FFFFFF;
+    padding: 20px 40px 20px 40px;
+}
