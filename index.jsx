@@ -30,7 +30,8 @@ var rootRoute={
         indexRoute:require("./Page/Entry"),
         childRoutes:[
             require("./Page/Entry"),
-            require("./Page/Admin")
+            require("./Page/Admin"),
+            require("./Page/Teacher")
         ]
     }]
 };
