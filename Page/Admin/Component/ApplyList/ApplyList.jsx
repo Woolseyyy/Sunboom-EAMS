@@ -39,8 +39,8 @@ class ApplyList extends Component {
                                 return(
                                     <ListItem
                                         key={index}
-                                        primaryText={data.author}
-                                        onKeyBoardFocus={this.props.HandleSelect}
+                                        primaryText={data.id+" "+data.author}
+                                        onTouchTap={()=>{this.props.HandleSelect(this.props.listID, index)}}
                                         rightIconButton={(data.statue=="done")?
                                             <IconButton tooltip="已受理" tooltipPosition="bottom-right">
                                                 <Done/>

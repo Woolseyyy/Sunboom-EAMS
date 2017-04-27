@@ -3,6 +3,7 @@ var style=require("./Admin.css");
 //var Helmet=require("react-helmet");
 
 import ApplyList from "./Component/ApplyList/ApplyList.jsx";
+import Detail from "./Component/Detail/Detail.jsx";
 
 import Slider from "../../Common/Slider/Slider.jsx";
 import Header from "../../Common/Header/Header.jsx"
@@ -14,21 +15,27 @@ class Entry extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            detailOpen: false,
             selectID: 0,
+            listID:0,
+            itemID:0,
             list:[
                 {
                     title:"课程补选申请列表",
                     data:[
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         },
                         {
-                            author: "3140102349 吴昊潜",
-                            statue:"wait"
+                            id: "3140102349",
+                            author: "吴昊潜",
+                            statue:"done"
                         },
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         }
                     ]
@@ -37,16 +44,19 @@ class Entry extends React.Component{
                     title:"对外交流申请列表",
                     data:[
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         },
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         },
                         {
-                            author: "3140102349 吴昊潜",
-                            statue:"wait"
+                            id: "3140102349",
+                            author: "吴昊潜",
+                            statue:"done"
                         }
                     ]
                 },
@@ -54,15 +64,18 @@ class Entry extends React.Component{
                     title:"开课申请列表",
                     data:[
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"wait"
                         },
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         },
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         }
                     ]
@@ -71,19 +84,21 @@ class Entry extends React.Component{
                     title:"教学资源申请列表",
                     data:[
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         },
                         {
-                            author: "3140102349 吴昊潜",
+                            id: "3140102349",
+                            author: "吴昊潜",
+                            statue:"done"
+                        },{
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"wait"
-                        },
-                        {
-                            author: "3140102349 吴昊潜",
-                            statue:"wait"
-                        },
-                        {
-                            author: "3140102349 吴昊潜",
+                        },{
+                            id: "3140102349",
+                            author: "吴昊潜",
                             statue:"done"
                         }
                     ]
@@ -93,6 +108,18 @@ class Entry extends React.Component{
     }
     SelectMenuChange = (index) =>{
         this.setState({selectID : index});
+    };
+    selectItemHandle = (listID, index) =>{
+        this.setState({
+            detailOpen: true,
+            itemID: index,
+            listID:listID
+        })
+    };
+    HandleClose=()=>{
+        this.setState({
+            detailOpen:false
+        })
     };
     render(){
         var beforeDeviderItems = [
@@ -120,9 +147,12 @@ class Entry extends React.Component{
                                 return(
                                     <ApplyList
                                         key={index}
+                                        listID={index}
                                         title={list.title}
                                         data={list.data}
-                                        onlyDone={this.state.selectID==5}/>
+                                        onlyDone={this.state.selectID==5}
+                                        HandleSelect={this.selectItemHandle}
+                                    />
                                 )
                             }
                             else {
@@ -131,7 +161,11 @@ class Entry extends React.Component{
                         }.bind(this))
                     }
                 </Paper>
-
+                <Detail open={this.state.detailOpen}
+                        title={this.state.list[this.state.listID].title}
+                        data={this.state.list[this.state.listID].data[this.state.itemID]}
+                        HandleClose={this.HandleClose}
+                />
             </div>
         )
     }
