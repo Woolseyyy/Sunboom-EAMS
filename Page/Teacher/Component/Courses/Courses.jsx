@@ -7,6 +7,15 @@ import css from "./Courses.css";
 //material-ui
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
+import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
+import {cyan500, cyan700, white} from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 
 class Entry extends Component{
     constructor(props) {
@@ -23,7 +32,30 @@ class Entry extends Component{
                     homework:{
                         title:"作业四",
                         text:"找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小" +
-                        "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐"
+                        "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐",
+                        list:[
+                            {
+                                id : "3140102349",
+                                name:"吴昊潜",
+                                score:"100"
+                            },
+                            {
+                                id : "3140102349",
+                                name:"吴昊潜",
+                                score:null
+                            }
+
+                        ]
+                    },
+                    file:{
+                        list:[
+                            {
+                                name:"第三周：Chap33.pptx",
+                            },
+                            {
+                                name:"第二周：Chap33.pptx",
+                            }
+                        ]
                     }
                 }
             ]
@@ -51,7 +83,7 @@ class Detail extends Component{
 
     render(){
         return(
-            <Paper zDepth={1} className={css.detail} onTouchTap={()=>{let open=this.state.open; this.setState({open:!open})}}>
+            <Paper zDepth={1} className={css.detail} onTouchTap={()=>{let open=this.state.open; if(!open){this.setState({open:!open})}}}>
                 <div className={(this.state.open)?css.nameOpen:css.name}>{this.props.data.name}</div>
                 <span className={css.schedule}>
                     {this.props.data.schedule}
@@ -60,7 +92,12 @@ class Detail extends Component{
                     data={this.props.data.nextChapter}
                     state={this.state.open}
                 />
-                {(!this.state.open)?null: <Homework data={this.props.data.homework}/>}
+                {(!this.state.open)?null:
+                    <div>
+                        <Homework data={this.props.data.homework}/>
+                        <CourseFile data={this.props.data.file}/>
+                    </div>
+                }
             </Paper>
         )
     }
@@ -88,6 +125,13 @@ class NextChapter extends Component{
 }
 
 class Homework extends Component{
+    constructor(props){
+        super(props);
+        this.state={
+            modify: false
+        }
+    }
+
     render(){
         return(
             <div className={css.cardContainer}>
@@ -101,6 +145,93 @@ class Homework extends Component{
                         <RaisedButton label="新增作业" primary={true}/>
                         <RaisedButton label="作业要求修改"/>
                         <RaisedButton label="作业打包下载"/>
+                    </div>
+                    <div style={{position:"relative"}}>
+                        <div className={css.cardTitle+" "+css.inline}>作业情况</div>
+                        <div className={css.cardTitleButton+" "+css.inline}>
+                            <Toggle
+                                label="修改成绩"
+                                defaultToggled={this.state.modify}
+                                onTouchTap={()=>{let modify=this.state.modify;this.setState({modify:!modify})}}
+                            />
+                        </div>
+                    </div>
+                    <Divider/>
+                    <div className={css.listTableContainer}>
+                        <Table selectable={false}>
+                            <TableBody displayRowCheckbox={false}>
+                                {
+                                    this.props.data.list.map((item, index)=>{
+                                        return(
+                                            <TableRow key={index} displayBorder={false}>
+                                                <TableRowColumn className={css.homeworkId}>{item.id}</TableRowColumn>
+                                                <TableRowColumn className={css.homeworkName}>{item.name}</TableRowColumn>
+                                                <TableRowColumn className={css.homeworkIcon}><FileDownload/></TableRowColumn>
+                                                <TableRowColumn/>
+                                                <TableRowColumn className={css.homeworkScore}>
+                                                    <TextField
+                                                        fullWidth={true}
+                                                        inputStyle={{textAlign:"center"}}
+                                                        name={"score"+index}
+                                                        disabled={!this.state.modify}
+                                                        defaultValue={(item.score==null)?item.score:"未提交"}
+                                                    />
+                                                </TableRowColumn>
+                                            </TableRow>
+                                        )
+                                    })
+                                }
+                            </TableBody>
+                        </Table>
+                    </div>
+                </Paper>
+            </div>
+        )
+    }
+}
+
+class CourseFile extends Component{
+    constructor(props){
+        super(props);
+        this.state={
+            modify: false
+        }
+    }
+
+    render(){
+        return(
+            <div className={css.cardContainer}>
+                <div className={css.cardName}>课程资料</div>
+                <Paper className={css.card}>
+                    <div style={{position:"relative"}}>
+                        <div className={css.cardTitle+" "+css.inline}>课程文件</div>
+                        <div className={css.cardTitleButton2+" "+css.inline}>
+                            <FlatButton
+                                label="上传"
+                                labelPosition="after"
+                                primary={true}
+                                icon={<CloudUpload color={cyan500} />}
+                                style={{height:"44px"}}
+                            />
+                        </div>
+                    </div>
+                    <Divider/>
+                    <div className={css.listTableContainer}>
+                        <Table selectable={false}>
+                            <TableBody displayRowCheckbox={false}>
+                                {
+                                    this.props.data.list.map((item, index)=>{
+                                        return(
+                                            <TableRow key={index} displayBorder={false}>
+                                                <TableRowColumn className={css.fileName}>{item.name}</TableRowColumn>
+                                                <TableRowColumn/>
+                                                <TableRowColumn style={{textAlign:"right"}} className={css.fileIcon}><FileDownload/></TableRowColumn>
+                                            </TableRow>
+                                        )
+                                    })
+                                }
+                            </TableBody>
+                        </Table>
                     </div>
                 </Paper>
             </div>
