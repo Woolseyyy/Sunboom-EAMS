@@ -31,7 +31,8 @@ var rootRoute={
         childRoutes:[
             require("./Page/Entry"),
             require("./Page/Admin"),
-            require("./Page/Teacher")
+            require("./Page/Teacher"),
+            require("./Page/Student")
         ]
     }]
 };
