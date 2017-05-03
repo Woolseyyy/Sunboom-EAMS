@@ -21,10 +21,19 @@ class CourseCard extends Component
 {
     constructor(props) {
         super(props);
+        this.state = { shadow: 1 }
     }
+
+    onMouseOver = () => this.setState({ shadow: 3 });
+    onMouseOut = () => this.setState({ shadow: 1 });
+
     render() {
         return (
-            <Card>
+            <Card
+                zDepth={this.state.shadow}
+                onMouseOver={this.onMouseOver}
+                onMouseOut={this.onMouseOut}
+            >
                 <CardHeader
                     title={this.props.avatar_title}
                     subtitle={this.props.avatar_subtitle}
@@ -37,8 +46,10 @@ class CourseCard extends Component
                     {this.props.course_info}
                 </CardText>
                 <CardActions>
-                    <RaisedButton label={this.props.button1_title} onClick={this.props.button1_click} />
-                    <RaisedButton label={this.props.button2_title} onClick={this.props.button2_click} />
+                    {
+                        this.props.buttons.map(function(button, i) {
+                            return <RaisedButton label={button['label']} onClick={button['onClick']} key={i} backgroundColor={button['backgroundColor']} labelColor={button['labelColor']}/>
+                    })}
                     <input type="text" id="text" value={this.props.alert_msg} readOnly='true'
                     style={{border: '0px', color: 'red', fontWeight: 'bold', marginLeft: '30'}}/>
                 </CardActions>

@@ -1,0 +1,63 @@
+.paperContainer {
+    margin: 20px;
+}
+
+.avatar {
+    margin-left: 23.8px;
+    margin-top: 16.4px;
+}
+
+.title {
+    border: 0px;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 39px;
+    margin-left: 30px;
+    vertical-align: top;
+}
+
+.hint {
+    border: 0px;
+    color: #7c7c7c;
+    font-size: 18px;
+    margin-left: 30px;
+    margin-top: 5px;
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+.nextCourseCard {
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-right: 40px;
+}
+
+.homework {
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-right: 40px;
+}
+
+.material {
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-right: 40px;
+}
+
+.material_title {
+    border: 0px;
+    color: black;
+    font-weight: bold;
+    font-size: 25px;
+    padding-top: 30px;
+    margin-left: 30px;
+    vertical-align: top;
+}
+
+.material_table {
+    margin-left: 40px;
+    margin-right: 0px;
+    padding: 0px;
+    overflow: auto;
+}
