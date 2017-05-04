@@ -18,7 +18,7 @@ class Entry extends React.Component
     }
 
     SelectMenuChange = (index) => {
-        this.setState({selectID: index});
+        this.setState({selectID: index, alertCourseList: false});
     };
 
     router = () => {
@@ -29,11 +29,6 @@ class Entry extends React.Component
                     <CourseList />
                 </div>
             );
-            // case 1: return (
-            //     <div className="main">
-            //         <CourseInfo />
-            //     </div>
-            // );
             case 3: return (
                 <div className="main">
                     <CourseSelectList />

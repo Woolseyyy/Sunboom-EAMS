@@ -6,8 +6,10 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import IconButton from 'material-ui/IconButton'
+
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
+import KeyBoardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 
 var css = require('./CourseInfo.css')
 import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx"
@@ -24,6 +26,15 @@ class Entry extends React.Component
         return (
             <div className={css.paperContainer}>
                 <Paper zDepth={1}>
+                    <div className="student-backto-courselist">
+                        <IconButton
+                            iconStyle={{width: "48px", height: "48px"}}
+                            style={{marginLeft: "15px", marginTop: "10px", border: "0px", padding: "0px", width: "48px", height: "48px", verticalAlign: "middle"}}
+                            onClick={this.props.clickBackCouseList}
+                            >
+                            <KeyBoardArrowLeft/>
+                        </IconButton>
+                    </div>
                     <div className="student-courseinfo-header">
                         <Avatar className={css.avatar} src={this.props.data.avatar} size={70}/>
                         <input className={css.title} type="text" value={this.props.data.title} readOnly='true'/>
