@@ -1,0 +1,43 @@
+.drawer {
+    padding: 10px 40px;
+}
+
+.title {
+    font-size: 36px;
+    color: #4A4A4A;
+    font-weight: normal;
+    margin: 10px 0 50px 0;
+}
+
+.line {
+    vertical-align: top;
+}
+
+.line > td {
+    padding: 10px 0;
+}
+
+.label {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+    width: 120px;
+}
+
+.content {
+    font-size: 20px;
+    color: rgba(55, 55, 55, 0.8);
+    letter-spacing: 0;
+    line-height: 24px;
+}
+
+.buttonGroup {
+    position: absolute;
+    bottom: 0;
+}
+
+.button {
+    margin: 15px 30px 15px 0;
+}
+

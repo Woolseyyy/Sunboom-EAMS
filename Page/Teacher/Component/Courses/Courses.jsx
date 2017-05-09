@@ -17,7 +17,7 @@ import {cyan500, cyan700, white} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 
-class Entry extends Component{
+class Courses extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,6 +47,42 @@ class Entry extends Component{
 
                         ]
                     },
+                    file: {
+                        list: [
+                            {
+                                name: "第三周：Chap33.pptx",
+                            },
+                            {
+                                name: "第二周：Chap33.pptx",
+                            }
+                        ]
+                    }
+                },
+                {
+                    name: "软件工程",
+                    schedule: "周二 9,10 节",
+                    nextChapter: {
+                        title: "CH35 Project Scheduling",
+                        text: "hahhahahahahahahha"
+                    },
+                    homework: {
+                        title: "作业四",
+                        text: "找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小" +
+                        "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐",
+                        list: [
+                            {
+                                id: "3140102349",
+                                name: "吴昊潜",
+                                score: "100"
+                            },
+                            {
+                                id: "3140102349",
+                                name: "吴昊潜",
+                                score: null
+                            }
+
+                        ]
+                    },
                     file:{
                         list:[
                             {
@@ -65,9 +101,13 @@ class Entry extends Component{
 
         return(
             <Paper zDepth={1} className="main">
-                <Detail
-                    data={this.state.data[0]}
-                />
+                {
+                    this.state.data.map(function (data, index) {
+                        return (
+                            <Detail data={data} key={index}/>
+                        )
+                    }.bind(this))
+                }
             </Paper>
         )
     }
@@ -77,7 +117,7 @@ class Detail extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            open: true
+            open: false
         };
     }
 
@@ -88,6 +128,13 @@ class Detail extends Component{
                 <span className={css.schedule}>
                     {this.props.data.schedule}
                 </span>
+                {(!this.state.open) ? null :
+                    <FlatButton label="收起" primary={true}
+                                style={{position: 'absolute', top: '20px', right: '35px'}}
+                                onTouchTap={() => {
+                                    this.setState({open: false})
+                                }}/>
+                }
                 <NextChapter
                     data={this.props.data.nextChapter}
                     state={this.state.open}
@@ -239,4 +286,4 @@ class CourseFile extends Component{
     }
 }
 
-module.exports=Entry;
+module.exports = Courses;

@@ -26,17 +26,23 @@ class Entry extends React.Component{
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请上人工智能',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请上人工智能',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请上人工智能',
+                            reason: '偶吼爱他啊'
                         }
                     ]
                 },
@@ -46,17 +52,23 @@ class Entry extends React.Component{
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请去哈佛',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请去哈佛',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请去哈佛',
+                            reason: '偶吼爱他啊'
                         }
                     ]
                 },
@@ -66,17 +78,23 @@ class Entry extends React.Component{
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"wait"
+                            statue: "wait",
+                            content: '申请开人工智能',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请开人工智能',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请开人工智能',
+                            reason: '偶吼爱他啊'
                         }
                     ]
                 },
@@ -86,20 +104,28 @@ class Entry extends React.Component{
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请201',
+                            reason: '偶吼爱他啊'
                         },
                         {
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请201',
+                            reason: '偶吼爱他啊'
                         },{
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"wait"
+                            statue: "wait",
+                            content: '申请201',
+                            reason: '偶吼爱他啊'
                         },{
                             id: "3140102349",
                             author: "吴昊潜",
-                            statue:"done"
+                            statue: "done",
+                            content: '申请201',
+                            reason: '偶吼爱他啊'
                         }
                     ]
                 }

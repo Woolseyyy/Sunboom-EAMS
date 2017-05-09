@@ -1,6 +1,8 @@
 .detail{
     padding: 20px 35px;
-    transition: height 1s;
+    transition: 1s;
+    position: relative;
+    margin-bottom: 50px;
 }
 
 .name{
