@@ -28,6 +28,7 @@ class Entry extends React.Component
                 <div className="main">
                     <CourseList />
                 </div>
+
             );
             case 3: return (
                 <div className="main">

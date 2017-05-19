@@ -15,6 +15,8 @@ var css = require('./CourseInfo.css')
 import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx"
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
+import CourseForum from '../CourseForum/CourseForum.jsx'
+
 class Entry extends React.Component
 {
     constructor(props)
@@ -72,6 +74,12 @@ class Entry extends React.Component
                                 <RaisedButton labelColor='#868686' label="作业提交" style={{marginLeft: '20px'}}/>
                             </CardActions>
                         </Card>
+                    </div>
+                    <input className={css.hint} type="text" value="课程论坛" readOnly='true'/>
+                    <div>
+                        <div className={css.forum}>
+                            <CourseForum />
+                        </div>
                     </div>
                     <input className={css.hint} type="text" value="课程资料" readOnly='true'/>
                     <div style={{paddingBottom: '60px'}}>

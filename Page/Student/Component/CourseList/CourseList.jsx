@@ -1,8 +1,10 @@
 var React = require("react");
 var css = require("./CourseList.css");
 
+import Toggle from 'material-ui/Toggle'
 import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx"
 import CourseInfo from "../CourseInfo/CourseInfo.jsx"
+import CourseGrid from "../CourseGrid/CourseGrid.jsx"
 
 var CourseCard = CourseCardBundle.CourseCard;
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
@@ -14,6 +16,7 @@ class Entry extends React.Component
         super(props);
         this.state = {
             OnCourseList: true,
+            ToggleList: true,
             data: {
                 avatar: CourseCardImgSource["SE"]["avator"],
                 title: "软件工程",
@@ -32,6 +35,31 @@ class Entry extends React.Component
                     {name: "作业四要求.pptx"},
                     {name: "第二周：chap31.pptx"}
                 ]
+            },
+            grid: {
+                header: [
+                    {title: 'MON'}, {title: 'TUE'}, {title: 'WED'},
+                    {title: 'THU'}, {title: 'FRI'}, {title: 'SAT'}, {title: 'SUN'}
+                ],
+                leftbar: [
+                    {rows: '2'}, {rows: '3'}, {rows: '3'}, {rows: '2'}, {rows: '3'},
+                ],
+                data: [
+                    {title: '', subtitle: '', rows: 2, cols: 7, filtered: false},
+                    {title: "数值分析", subtitle: '周一3,4,5节\n黄劲\n紫金港西1-405(多)', rows: 3, cols: 1, filtered: true},
+                    {title: "计算机网络", subtitle: '周二3,4,5节\n董玮\n玉泉教4-413', rows: 3, cols: 1, filtered: true},
+                    {title: '', subtitle: '', rows: 3, cols: 2, filtered: false},
+                    {title: "人工智能", subtitle: '周五3,4,5节\n李玺\n玉泉教4－419', rows: 3, cols: 1, filtered: false},
+                    {title: '', subtitle: '', rows: 3, cols: 2, filtered: false},
+                    {title: "微观经济学", subtitle: '周一6,7,8节\n赖普清\n紫金港东1-104(多)', rows: 3, cols: 1, filtered: true},
+                    {title: '', subtitle: '', rows: 3, cols: 1, filtered: false},
+                    {title: "编译原理", subtitle: '周三6,7,8节\n陈纯/冯雁\n玉泉曹光彪二期-104(多)', rows: 3, cols: 1, filtered: true},
+                    {title: '', subtitle: '', rows: 3, cols: 4, filtered: false},
+                    {title: '', subtitle: '', rows: 2, cols: 1, filtered: false},
+                    {title: "软件工程", subtitle: '周二9,10节\n邓水光\n玉泉曹光彪二期-202(多)', rows: 2, cols: 1, filtered: true},
+                    {title: '', subtitle: '', rows: 2, cols: 5, filtered: false},
+                    {title: '', subtitle: '', rows: 4, cols: 7, filtered: false}
+                ]
             }
         };
     }
@@ -44,22 +72,43 @@ class Entry extends React.Component
         this.setState({OnCourseList: false});
     }
 
+    clickOnToggle = () => {
+        this.setState({ToggleList: !this.state.ToggleList})
+    }
+
     router = () => {
-        if (this.state.OnCourseList)
+        if (!this.state.ToggleList)
         {
-            return <CourseList handleClick={this.clickOnCourse}/>;
+            return <CourseGrid grid={this.state.grid}/>
         }
         else
         {
-            return <CourseInfo data={this.state.data} clickBackCouseList={this.clickBackCouseList}/>;
+            if (this.state.OnCourseList)
+            {
+                return <CourseList handleClick={this.clickOnCourse}/>;
+            }
+            else
+            {
+                return <CourseInfo data={this.state.data} clickBackCouseList={this.clickBackCouseList}/>;
+            }
         }
     }
 
     render()
     {
         return (
-            <div className="junk-name" onChange={this.clickBackCouseList}>
-                {this.router()}
+            <div>
+                <div>
+                    <Toggle
+                        label={this.state.ToggleList ? "列表模式": "表格模式"}
+                        labelStyle={{fontSize: "15px", color: "#7c7c7c", fontWeight: "bold"}}
+                        style={{width: '200px', marginLeft: "20"}}
+                        onClick={this.clickOnToggle}
+                        />
+                </div>
+                <div className="junk-name" onChange={this.clickBackCouseList}>
+                    {this.router()}
+                </div>
             </div>
         )
     }

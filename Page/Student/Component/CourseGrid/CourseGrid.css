@@ -1,0 +1,13 @@
+.gridContainer {
+    display: 'inline-block';
+    margin: 20;
+}
+.courseGridBodyLeft {
+    float: left;
+    background-color: grey;
+    width: 30px;
+}
+.courseBodyLeftItem {
+    height: 50px;
+    padding: 1px;
+}
