@@ -7,6 +7,8 @@ import CourseList from "./Component/CourseList/CourseList.jsx"
 import CourseSelectList from "./Component/CourseSelectList/CourseSelectList.jsx"
 import CourseInfo from "./Component/CourseInfo/CourseInfo.jsx"
 
+import CourseForumDetail from "./Component/CourseForumDetail/CourseForumDetail.jsx"
+
 class Entry extends React.Component
 {
     constructor(props)
@@ -29,6 +31,11 @@ class Entry extends React.Component
                     <CourseList />
                 </div>
 
+            );
+            case 1: return (
+                <div className="main">
+                    <CourseForumDetail />
+                </div>
             );
             case 3: return (
                 <div className="main">
