@@ -11,8 +11,9 @@ import FileDownload from 'material-ui/svg-icons/file/file-download';
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
 import KeyBoardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 
-var css = require('./CourseInfo.css')
-import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx"
+var css = require('./CourseInfo.css');
+import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx";
+import ToolFunction from "../ToolFuction/ToolFunction.jsx";
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
 import CourseForum from '../CourseForum/CourseForum.jsx'
@@ -27,6 +28,7 @@ class Entry extends React.Component
     render() {
         return (
             <div className={css.paperContainer}>
+                <ToolFunction/>
                 <Paper zDepth={1}>
                     <div className="student-backto-courselist">
                         <IconButton
