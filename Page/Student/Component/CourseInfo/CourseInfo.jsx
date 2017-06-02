@@ -16,7 +16,7 @@ import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx
 import ToolFunction from "../ToolFuction/ToolFunction.jsx";
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
-import CourseForum from '../CourseForum/CourseForum.jsx'
+import CourseForum from '../../../../Common/CourseForum/CourseForum.jsx'
 
 class Entry extends React.Component
 {

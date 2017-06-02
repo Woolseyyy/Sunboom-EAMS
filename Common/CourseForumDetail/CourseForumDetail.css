@@ -9,12 +9,10 @@
 }
 
 .titleContainer {
-    margin-left: 30px;
-    margin-top: 20px;
-    width: 70%;
+    margin: 20px 30px 0 30px;
     background-color: #F6F9FA;
     border: 1px solid #DEDEDE;
-    border-radius: 10px
+    border-radius: 10px;
 }
 
 .title {

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 //var Helmet=require("react-helmet");
 
 import css from "./Courses.css";
+import CourseForum from '../../../../Common/CourseForum/CourseForum.jsx'
 
 //material-ui
 import Paper from 'material-ui/Paper';
@@ -143,6 +144,7 @@ class Detail extends Component{
                     <div>
                         <Homework data={this.props.data.homework}/>
                         <CourseFile data={this.props.data.file}/>
+                        <Forumn/>
                     </div>
                 }
             </Paper>
@@ -236,7 +238,16 @@ class Homework extends Component{
         )
     }
 }
-
+class Forumn extends Component {
+    render() {
+        return (
+            <div className={css.cardContainer}>
+                <div className={css.cardName}>课程论坛</div>
+                <CourseForum />
+            </div>
+        )
+    }
+}
 class CourseFile extends Component{
     constructor(props){
         super(props);

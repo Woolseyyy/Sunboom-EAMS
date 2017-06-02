@@ -4,6 +4,9 @@ import Avatar from 'material-ui/Avatar'
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Textarea from 'react-textarea-autosize';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import BackIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+
 
 var css = require('./CourseForumDetail.css')
 const example_author_avatar = require("./example/example_author_avatar.png")
@@ -132,6 +135,11 @@ class Entry extends React.Component
                         </div>
                     </div>
                 </div>
+                <FloatingActionButton
+                    onTouchTap={this.props.back}
+                    style={{position: 'fixed', marginRight: '20px', marginTop: '86px', right: '15%', top: '40%'}}>
+                    <BackIcon />
+                </FloatingActionButton>
             </div>
         )
     }
