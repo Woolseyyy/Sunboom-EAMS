@@ -6,11 +6,15 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import * as $ from "webpack-dev-server/client/web_modules/jquery/jquery-1.8.1";
 
 class LoginForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            value: 'student',
+            error: false
+        };
         this.handleFieldSelect = this.handleFieldSelect.bind(this);
         this.LoginFormSubmit = this.LoginFormSubmit.bind(this);
     }
@@ -18,13 +22,52 @@ class LoginForm extends Component {
     handleFieldSelect(event, index, value) { this.setState({value}); }
 
     LoginFormSubmit() {
-        var data = {
+        let data = {
             usrname: this.refs.usrname.input.value,
             password: this.refs.psd.input.value,
             identity: this.state.value
         };
         console.log(data);
-        // DO SOMETHING
+        $.ajax({
+            url: "/api/Account/Login",
+            contentType: 'application/json',
+            type: 'POST',
+            data: JSON.stringify({
+                role: data.identity,
+                id: data.usrname,
+                password: data.password
+            }),
+            success: function (cb) {
+                console.log(cb);
+                switch (cb.ErrorCode) {
+                    case 200:
+                        //store token
+                        localStorage.token = cb.Data.token;
+
+                        //continue
+                        let url;
+                        switch (data.identity) {
+                            case 'student':
+                                url = '/#/student';
+                                break;
+                            case 'instructor':
+                                url = '/#/teacher';
+                                break;
+                            case 'admin':
+                                url = '/#/admin';
+                                break;
+                        }
+                        window.location.href = url;
+                        break;
+                    case 403:
+                        this.setState({error: true});
+                        break;
+                }
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("ajax请求发起失败");
+            }.bind(this)
+        });
     }
 
     render() {
@@ -58,17 +101,28 @@ class LoginForm extends Component {
                     <img src={require("./static/logo.png")} style={logoStyle}/>
                     <h1 style={h1Style}>Sunboom 教务系统</h1>
                 </div>
-
-                <TextField ref='usrname' hintText="请输入用户名" floatingLabelText="请输入用户名" style={{verticalAlign: 'bottom', width: '60%'}}/>
+                {
+                    (this.state.error) ?
+                        <TextField
+                            ref='usrname'
+                            hintText="请输入用户名"
+                            floatingLabelText="请输入用户名"
+                            style={{verticalAlign: 'bottom', width: '60%'}}
+                            errorText="登录失败！请检查登录信息"
+                        />
+                        :
+                        <TextField ref='usrname' hintText="请输入用户名" floatingLabelText="请输入用户名"
+                                   style={{verticalAlign: 'bottom', width: '60%'}}/>
+                }
                 <SelectField
                     floatingLabelText="登录身份"
                     value={this.state.value}
                     onChange={this.handleFieldSelect}
                     style={{verticalAlign: 'bottom', width: '40%'}}
                 >
-                    <MenuItem value={1} primaryText="学生" />
-                    <MenuItem value={2} primaryText="教师" />
-                    <MenuItem value={3} primaryText="管理员" />
+                    <MenuItem value={'student'} primaryText="学生"/>
+                    <MenuItem value={'instructor'} primaryText="教师"/>
+                    <MenuItem value={'admin'} primaryText="管理员"/>
                 </SelectField>
                 <div className="form-field">
                     <TextField ref='psd' hintText="请输入密码" floatingLabelText="请输入密码" style={{width: '100%', marginBottom:'16px'}}/>
