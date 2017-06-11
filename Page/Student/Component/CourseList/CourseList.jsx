@@ -2,7 +2,7 @@ var React = require("react");
 var css = require("./CourseList.css");
 
 import Toggle from 'material-ui/Toggle'
-import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx"
+import CourseCardBundle from "../CourseCard/CourseCard.jsx"
 import CourseInfo from "../CourseInfo/CourseInfo.jsx"
 import CourseGrid from "../CourseGrid/CourseGrid.jsx"
 

@@ -1,7 +1,7 @@
 var React = require("react");
 var css = require("./CourseSelectList.css");
 
-import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx"
+import CourseCardBundle from "../CourseCard/CourseCard.jsx"
 
 var CourseCard = CourseCardBundle.CourseCard;
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;

@@ -17,14 +17,15 @@ const CourseCardImgSource = {
     }
 };
 
-class CourseCard extends Component {
+class CourseCard extends Component
+{
     constructor(props) {
         super(props);
-        this.state = {shadow: 1}
+        this.state = { shadow: 1 }
     }
 
-    onMouseOver = () => this.setState({shadow: 3});
-    onMouseOut = () => this.setState({shadow: 1});
+    onMouseOver = () => this.setState({ shadow: 3 });
+    onMouseOut = () => this.setState({ shadow: 1 });
 
     render() {
         return (
@@ -40,28 +41,25 @@ class CourseCard extends Component {
                 <CardMedia>
                     <img src={this.props.course_img}/>
                 </CardMedia>
-                <CardTitle title={this.props.course_title}/>
+                <CardTitle title={this.props.course_title} />
                 <CardText>
                     {this.props.course_info}
                 </CardText>
                 <CardActions>
                     {
-                        this.props.buttons.map(function (button, i) {
-                            return <RaisedButton label={button['label']} onClick={button['onClick']} key={i}
-                                                 backgroundColor={button['backgroundColor']}
-                                                 labelColor={button['labelColor']}/>
-                        })}
+                        this.props.buttons.map(function(button, i) {
+                            return <RaisedButton label={button['label']} onClick={button['onClick']} key={i} backgroundColor={button['backgroundColor']} labelColor={button['labelColor']}/>
+                    })}
                     <input type="text" id="text" value={this.props.alert_msg} readOnly='true'
-                           style={{border: '0px', color: 'red', fontWeight: 'bold', marginLeft: '30'}}/>
+                    style={{border: '0px', color: 'red', fontWeight: 'bold', marginLeft: '30'}}/>
                 </CardActions>
             </Card>
         );
     }
 
-}
-;
+};
 
 module.exports = {
-    CourseCard,
-    CourseCardImgSource
+   CourseCard,
+   CourseCardImgSource
 }
