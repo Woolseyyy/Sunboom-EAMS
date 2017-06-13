@@ -12,7 +12,7 @@ import FileUpload from 'material-ui/svg-icons/file/file-upload';
 import KeyBoardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 
 var css = require('./CourseInfo.css');
-import CourseCardBundle from "../../../Entry/Component/CourseCard/CourseCard.jsx";
+import CourseCardBundle from "../CourseCard/CourseCard.jsx";
 import ToolFunction from "../ToolFuction/ToolFunction.jsx";
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
