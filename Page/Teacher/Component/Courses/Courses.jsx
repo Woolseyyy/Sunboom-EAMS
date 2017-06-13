@@ -24,6 +24,7 @@ class Courses extends Component {
         this.state = {
             data:[
                 {
+                    _id: "",
                     name: "软件工程",
                     schedule:"周二 9,10 节",
                     nextChapter:{
@@ -31,19 +32,24 @@ class Courses extends Component {
                         text: "hahhahahahahahahha"
                     },
                     homework:{
+                        _id: "",
                         title:"作业四",
                         text:"找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小" +
                         "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐",
                         list:[
                             {
+                                _id: "",
                                 id : "3140102349",
                                 name:"吴昊潜",
-                                score:"100"
+                                score: "100",
+                                url: ''
                             },
                             {
+                                _id: "",
                                 id : "3140102349",
                                 name:"吴昊潜",
-                                score:null
+                                score: null,
+                                url: ''
                             }
 
                         ]
@@ -52,9 +58,11 @@ class Courses extends Component {
                         list: [
                             {
                                 name: "第三周：Chap33.pptx",
+                                url: ""
                             },
                             {
                                 name: "第二周：Chap33.pptx",
+                                url: ""
                             }
                         ]
                     }
@@ -67,19 +75,24 @@ class Courses extends Component {
                         text: "hahhahahahahahahha"
                     },
                     homework: {
+                        _id: "",
                         title: "作业四",
                         text: "找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小" +
                         "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐",
                         list: [
                             {
+                                _id: "",
                                 id: "3140102349",
                                 name: "吴昊潜",
-                                score: "100"
+                                score: "100",
+                                url: ''
                             },
                             {
+                                _id: "",
                                 id: "3140102349",
                                 name: "吴昊潜",
-                                score: null
+                                score: null,
+                                url: ''
                             }
 
                         ]
@@ -88,9 +101,11 @@ class Courses extends Component {
                         list:[
                             {
                                 name:"第三周：Chap33.pptx",
+                                url: ""
                             },
                             {
                                 name:"第二周：Chap33.pptx",
+                                url: ""
                             }
                         ]
                     }

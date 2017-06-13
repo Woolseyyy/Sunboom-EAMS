@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import * as $ from "webpack-dev-server/client/web_modules/jquery/jquery-1.8.1";
+import * as $ from "jquery/src/ajax";
 
 class LoginForm extends Component {
     constructor(props) {
