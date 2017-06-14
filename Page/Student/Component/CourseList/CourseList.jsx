@@ -6,6 +6,9 @@ import CourseCardBundle from "../CourseCard/CourseCard.jsx"
 import CourseInfo from "../CourseInfo/CourseInfo.jsx"
 import CourseGrid from "../CourseGrid/CourseGrid.jsx"
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 var CourseCard = CourseCardBundle.CourseCard;
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
@@ -62,14 +65,59 @@ class Entry extends React.Component
                 ]
             }
         };
+        this.clickOnCourse = this.clickOnCourse.bind(this);
     }
 
     clickBackCouseList = () => {
         this.setState({OnCourseList: true});
     }
 
-    clickOnCourse = () => {
+    clickOnCourse = (e) => {
         this.setState({OnCourseList: false});
+        return fetch(localStorage.root_url + 'api/Enrollment/EnrollmentDetail?id=' + e.toString(),
+            {
+                method: 'GET',
+                mode: "cors",
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.token
+                },
+            })
+            .then((response) => response.json())
+            .then((cb) => {
+                switch (cb.errorCode)
+                {
+                    case 200:
+                        var dic = new Array();
+
+                        dic['avatar']=localStorage.root_url+cb.data.avatar;
+                        dic['title']=cb.data.title;
+                        dic['course_img']=localStorage.root_url+cb.data.courseImg;
+                        dic['next_chap_title'] = cb.data.nextChapTitle;
+                        dic['next_chap_content'] = cb.data.nextChapContent;
+                        dic['homework_title'] = cb.data.homeworkTitle;
+                        dic['homework_content'] = cb.data.homeworkContent;
+
+                        var homework = [];
+                        for (var key in cb.data.homeworks) {
+                            var item = cb.data.homeworks[key];
+                            homework.push(item);
+                        }
+                        dic['homework'] = homework;
+
+                        var material = [];
+                        for (var key in cb.data.materials) {
+                            var item = cb.data.materials[key];
+                            material.push(item);
+                        }
+                        dic['material'] = material;
+
+                        this.setState({data: dic});
+                        break;
+                    default:
+                        console.error("课程详细信息错误");
+                        break;
+                }
+            });
     }
 
     clickOnToggle = () => {
@@ -118,47 +166,74 @@ class CourseList extends React.Component {
     constructor(props)
     {
         super(props);
+        this.state = {
+            data: [
+
+            ]
+        }
+    }
+
+    componentDidMount()
+    {
+        return fetch(localStorage.root_url + 'api/Enrollment/MyEnrollments',
+            {
+                method: 'GET',
+                mode: "cors",
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.token
+                }
+            })
+            .then((response) => response.json())
+            .then((cb) => {
+                switch (cb.errorCode)
+                {
+                    case 200:
+                        var arrayData = [];
+                        for (var key in cb.data) {
+                            var item = cb.data[key];
+                            var dic = new Array();
+
+                            dic["avatar_title"] = item.avatarTitle;
+                            dic["avatar_subtitle"] = item.courseTime;
+                            dic["avatar_img"] = localStorage.root_url + item.avatarImg;
+                            dic["course_img"] = localStorage.root_url + item.courseImg;
+                            dic["course_title"] = item.courseTitle;
+                            dic["course_info"] = item.courseInfo;
+                            dic["buttons"] =[{label: '课件', onClick: function(){}}, {label: '作业四', onClick: function(){}}];
+                            dic["alert_msg"]="";
+                            dic["course_id"]=item.id;
+                            arrayData.push(dic);
+                        }
+                        this.setState({data: arrayData});
+                        break;
+                    default:
+                        console.error("课程列表初始化错误");
+                        break;
+                }
+            });
     }
 
     render() {
         return (
             <div className={css.cardContainer}>
-                <div className={css.card} onClick={this.props.handleClick}>
-                    <CourseCard
-                        avatar_title="软件工程"
-                        avatar_subtitle="下一节课为 周日下午三四节"
-                        avatar_img={CourseCardImgSource["SE"]["avator"]}
-                        course_img={CourseCardImgSource["SE"]["course"]}
-                        course_title='CH35 Project Scheduling'
-                        course_info='Scheduling Principles, compartmentalization distinct tasks'
-                        buttons={[{label: '课件', onClick: function(){}}, {label: '作业四', onClick: function(){}}]}
-                        alert_msg='作业四还有三天截止'
-                    />
-                </div>
-                <div className={css.card}>
-                    <CourseCard className={css.card}
-                        avatar_title="人工智能"
-                        avatar_subtitle="下一节课为 周五上午三四五节"
-                        avatar_img={CourseCardImgSource["AI"]["avator"]}
-                        course_img={CourseCardImgSource["AI"]["course"]}
-                        course_title=''
-                        course_info=''
-                        buttons={[{label: '课件', onClick: function(){}}, {label: '作业二（已完成）', onClick: function(){}}]}
-                        alert_msg='目前无未提交作业'
-                    />
-                </div>
-                <div className={css.card}>
-                    <CourseCard className={css.card}
-                        avatar_title="编译原理"
-                        avatar_subtitle="下一节课为 周四下午六七八节"
-                        avatar_img={CourseCardImgSource["Compiler"]["avator"]}
-                        course_img={CourseCardImgSource["Compiler"]["course"]}
-                        course_title='CH5 semantic analysis'
-                        course_info='完全不知道编译原理是什么鬼'
-                        buttons={[{label: '课件', onClick: function(){}}, {label: '作业三（未提交）', onClick: function(){}}]}
-                        alert_msg='考试取消啦哈哈哈哈哈哈'
-                    />
-                </div>
+            {
+                this.state.data.map((item, id) => {
+                    return (
+                        <div className={css.card} onClick={(e) => this.props.handleClick(item.course_id)} key={id}>
+                            <CourseCard
+                                avatar_title={item.avatar_title}
+                                avatar_subtitle={item.avatar_subtitle}
+                                avatar_img={item.avatar_img}
+                                course_img={item.course_img}
+                                course_title={item.course_title}
+                                course_info={item.course_info}
+                                buttons={item.buttons}
+                                alert_msg={item.alert_msg}
+                            />
+                        </div>
+                    )
+                })
+            }
             </div>
         )
     }

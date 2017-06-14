@@ -1,4 +1,5 @@
 var webpack=require("webpack");
+
 module.exports = {
     entry:{
 		index: './index.jsx'
@@ -21,9 +22,9 @@ module.exports = {
     	}, {
     		test: /\.css$/,
     		loader: 'style-loader!css-loader?modules'
-    	}, { 
-    		test: /\.(png|jpg|svg|gif|eot|woff|ttf)$/, 
-    		loader: 'url-loader?limit=25000' 
+    	}, {
+    		test: /\.(png|jpg|svg|gif|eot|woff|ttf)$/,
+    		loader: 'url-loader?limit=25000'
     	}]
     },
 	/*externals: {

@@ -6,7 +6,10 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import * as $ from "jquery/src/ajax";
+// import * as $ from "jquery/src/ajax";
+
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 class LoginForm extends Component {
     constructor(props) {
@@ -22,52 +25,44 @@ class LoginForm extends Component {
     handleFieldSelect(event, index, value) { this.setState({value}); }
 
     LoginFormSubmit() {
-        let data = {
-            usrname: this.refs.usrname.input.value,
-            password: this.refs.psd.input.value,
-            identity: this.state.value
-        };
-        console.log(data);
-        $.ajax({
-            url: "/api/Account/Login",
-            contentType: 'application/json',
-            type: 'POST',
-            data: JSON.stringify({
-                role: data.identity,
-                id: data.usrname,
-                password: data.password
-            }),
-            success: function (cb) {
-                console.log(cb);
-                switch (cb.ErrorCode) {
-                    case 200:
-                        //store token
-                        localStorage.token = cb.Data.token;
+        var data = new FormData();
+        data.append('id', this.refs.usrname.input.value);
+        data.append('password', this.refs.psd.input.value);
+        data.append('role', this.state.value);
 
+        localStorage.root_url = "http://nullptr.imwork.net:12903/";
+
+        return fetch(localStorage.root_url + 'api/Account/Login',
+            {
+                method: 'POST',
+                body: data
+            })
+            .then((response) => response.json())
+            .then((cb) => {
+                switch (cb.errorCode)
+                {
+                    case 200:
+                        localStorage.token = cb.data;
                         //continue
                         let url;
-                        switch (data.identity) {
+                        switch (this.state.value) {
                             case 'student':
-                                url = '/#/student';
-                                break;
+                            url = '/#/student';
+                            break;
                             case 'instructor':
-                                url = '/#/teacher';
-                                break;
+                            url = '/#/teacher';
+                            break;
                             case 'admin':
-                                url = '/#/admin';
-                                break;
+                            url = '/#/admin';
+                            break;
                         }
                         window.location.href = url;
                         break;
-                    case 403:
+                    default:
                         this.setState({error: true});
                         break;
                 }
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("ajax请求发起失败");
-            }.bind(this)
-        });
+            });
     }
 
     render() {
