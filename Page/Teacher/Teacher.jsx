@@ -3,8 +3,8 @@ var style=require("./Teacher.css");
 //var Helmet=require("react-helmet");
 
 import Courses from "./Component/Courses/Courses.jsx";
-import ApplyList from "./Component/ApplyList/ApplyList.jsx";
-import Detail from "./Component/Detail/Detail.jsx";
+import ApplyList from "../../Common/ApplyList/ApplyList.jsx";
+import Detail from "../../Common/Detail/Detail.jsx";
 
 import Slider from "../../Common/Slider/Slider.jsx";
 import Header from "../../Common/Header/Header.jsx"

@@ -21,23 +21,15 @@ class Entry extends React.Component
             OnCourseList: true,
             ToggleList: true,
             data: {
-                avatar: CourseCardImgSource["SE"]["avator"],
-                title: "软件工程",
-                course_img: CourseCardImgSource["SE"]["course"],
-                next_chap_title: "CH35 Project Scheduling",
-                next_chap_content: "乌鲁鲁噜噜噜噜噜噜",
-                homework_title: "作业四",
-                homework_content: "巴啦啦啦啦啦啦啦啦啦啦啦",
-                homework: [
-                    {name: "第一次作业", grade: "95/100", submit: true},
-                    {name: "第二次作业", grade: "", submit: true},
-                    {name: "第三次作业", grade: "", submit: false}
-                ],
-                material: [
-                    {name: "第三周：chap33.pptx"},
-                    {name: "作业四要求.pptx"},
-                    {name: "第二周：chap31.pptx"}
-                ]
+                avatar: "",
+                title: "",
+                course_img: "",
+                next_chap_title: "",
+                next_chap_content: "",
+                homework_title: "",
+                homework_content: "",
+                homework: [],
+                material: []
             },
             grid: {
                 header: [
