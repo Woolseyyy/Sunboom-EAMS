@@ -39,7 +39,9 @@ class CourseCard extends Component
                     subtitle={this.props.avatar_subtitle}
                     avatar={this.props.avatar_img}/>
                 <CardMedia>
-                    <img src={this.props.course_img}/>
+                    <div style={{paddingLeft: "10%", paddingRight: "10%"}}>
+                        <img src={this.props.course_img} style={{height: "50%", width: "50%"}}/>
+                    </div>
                 </CardMedia>
                 <CardTitle title={this.props.course_title} />
                 <CardText>
@@ -47,9 +49,12 @@ class CourseCard extends Component
                 </CardText>
                 <CardActions>
                     {
-                        this.props.buttons.map(function(button, i) {
-                            return <RaisedButton label={button['label']} onClick={button['onClick']} key={i} backgroundColor={button['backgroundColor']} labelColor={button['labelColor']}/>
-                    })}
+                        (this.props.buttons != undefined) ? (
+                            this.props.buttons.map(function(button, i) {
+                                return <RaisedButton label={button['label']} onClick={button['onClick']} key={i} backgroundColor={button['backgroundColor']} labelColor={button['labelColor']}/>
+                            })
+                        ) : (<div></div>)
+                    }
                     <input type="text" id="text" value={this.props.alert_msg} readOnly='true'
                     style={{border: '0px', color: 'red', fontWeight: 'bold', marginLeft: '30'}}/>
                 </CardActions>
