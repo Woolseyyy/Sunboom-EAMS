@@ -12,6 +12,8 @@ require('isomorphic-fetch');
 var CourseCard = CourseCardBundle.CourseCard;
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
+var griddata = [];
+
 class Entry extends React.Component
 {
     constructor(props)
@@ -31,33 +33,24 @@ class Entry extends React.Component
                 homework: [],
                 material: []
             },
+            gridpredata: {
+
+            },
             grid: {
                 header: [
                     {title: 'MON'}, {title: 'TUE'}, {title: 'WED'},
                     {title: 'THU'}, {title: 'FRI'}, {title: 'SAT'}, {title: 'SUN'}
                 ],
                 leftbar: [
-                    {rows: '2'}, {rows: '3'}, {rows: '3'}, {rows: '2'}, {rows: '3'},
+                    {rows: '1'}, {rows: '1'}, {rows: '1'}, {rows: '1'}, {rows: '1'}, {rows: '1'},
+                    {rows: '1'}, {rows: '1'}, {rows: '1'}, {rows: '1'}, {rows: '1'}, {rows: '1'},
+                    {rows: '1'}
                 ],
-                data: [
-                    {title: '', subtitle: '', rows: 2, cols: 7, filtered: false},
-                    {title: "数值分析", subtitle: '周一3,4,5节\n黄劲\n紫金港西1-405(多)', rows: 3, cols: 1, filtered: true},
-                    {title: "计算机网络", subtitle: '周二3,4,5节\n董玮\n玉泉教4-413', rows: 3, cols: 1, filtered: true},
-                    {title: '', subtitle: '', rows: 3, cols: 2, filtered: false},
-                    {title: "人工智能", subtitle: '周五3,4,5节\n李玺\n玉泉教4－419', rows: 3, cols: 1, filtered: false},
-                    {title: '', subtitle: '', rows: 3, cols: 2, filtered: false},
-                    {title: "微观经济学", subtitle: '周一6,7,8节\n赖普清\n紫金港东1-104(多)', rows: 3, cols: 1, filtered: true},
-                    {title: '', subtitle: '', rows: 3, cols: 1, filtered: false},
-                    {title: "编译原理", subtitle: '周三6,7,8节\n陈纯/冯雁\n玉泉曹光彪二期-104(多)', rows: 3, cols: 1, filtered: true},
-                    {title: '', subtitle: '', rows: 3, cols: 4, filtered: false},
-                    {title: '', subtitle: '', rows: 2, cols: 1, filtered: false},
-                    {title: "软件工程", subtitle: '周二9,10节\n邓水光\n玉泉曹光彪二期-202(多)', rows: 2, cols: 1, filtered: true},
-                    {title: '', subtitle: '', rows: 2, cols: 5, filtered: false},
-                    {title: '', subtitle: '', rows: 4, cols: 7, filtered: false}
-                ]
+                data: []
             }
         };
         this.clickOnCourse = this.clickOnCourse.bind(this);
+        this.clickOnToggle = this.clickOnToggle.bind(this);
     }
 
     clickBackCouseList = () => {
@@ -113,7 +106,10 @@ class Entry extends React.Component
     }
 
     clickOnToggle = () => {
-        this.setState({ToggleList: !this.state.ToggleList})
+        let leftbar = this.state.grid.leftbar;
+        let header = this.state.grid.header;
+        console.log(griddata);
+        this.setState({ToggleList: !this.state.ToggleList, grid: {header: header, leftbar: leftbar, data: griddata}})
     }
 
     router = () => {
@@ -181,12 +177,34 @@ class CourseList extends React.Component {
                 {
                     case 200:
                         var arrayData = [];
+                        console.log(cb.data);
+                        var prefGridData = [[], [], [], [], [], [], []];
                         for (var key in cb.data) {
                             var item = cb.data[key];
                             var dic = new Array();
 
+                            for (var id in item.courseTime) {
+                                var tmp = item.courseTime[id];
+                                for (var j = 0; j < tmp.duration - 1; j++)
+                                {
+                                    prefGridData[tmp.day][tmp.startTime + j] = {
+                                        title: item.avatarTitle,
+                                        subtitle: item.instructorName,
+                                        showText: false
+                                    }
+                                }
+                                if (tmp.duration > 0)
+                                {
+                                    prefGridData[tmp.day][tmp.startTime + tmp.duration - 1] = {
+                                        title: item.avatarTitle,
+                                        subtitle: item.instructorName,
+                                        showText: true
+                                    }
+                                }
+                            }
+
                             dic["avatar_title"] = item.avatarTitle;
-                            dic["avatar_subtitle"] = item.courseTime;
+                            dic["avatar_subtitle"] = item.instructorName;
                             dic["avatar_img"] = localStorage.root_url + item.avatarImg;
                             dic["course_img"] = localStorage.root_url + item.courseImg;
                             dic["course_title"] = item.courseTitle;
@@ -195,6 +213,28 @@ class CourseList extends React.Component {
                             dic["alert_msg"]="";
                             dic["course_id"]=item.id;
                             arrayData.push(dic);
+                        }
+                        griddata = [];
+                        for (var i = 0; i < 13; i++)
+                        {
+                            for (var j = 0; j < 7; j++)
+                            {
+                                if (prefGridData[j][i] == undefined)
+                                {
+                                    griddata.push({title: "", subtitle: "", rows: 1, cols: 1, showText: false, filtered: false});
+                                }
+                                else
+                                {
+                                    griddata.push({
+                                        title: prefGridData[j][i].title,
+                                        subtitle: prefGridData[j][i].subtitle,
+                                        rows: 1,
+                                        cols: 1,
+                                        showText: prefGridData[j][i].showText,
+                                        filtered: true
+                                    })
+                                }
+                            }
                         }
                         this.setState({data: arrayData});
                         break;

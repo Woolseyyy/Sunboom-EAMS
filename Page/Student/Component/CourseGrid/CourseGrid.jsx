@@ -32,7 +32,7 @@ class Entry extends React.Component
                     </div>
 
                     <div className="course-grid-body" style={{float: 'left', width: '30px'}}>
-                        <GridList cols={1} rows={14} cellHeight={50} padding={2}>
+                        <GridList cols={1} rows={14} cellHeight={100} padding={2}>
                             {this.props.grid.leftbar.map((tile) => (
                                 <GridTile
                                     cols={1}
@@ -44,25 +44,38 @@ class Entry extends React.Component
                         </GridList>
                     </div>
                     <div className="course-grid-body">
-                        <GridList cols={7} rows={14} cellHeight={50} padding={2}>
-                            {this.props.grid.data.map((tile) => (
+                        <GridList cols={7} rows={14} cellHeight={100} padding={2}>
+                            {this.props.grid.data.map((tile, id) => (
                                 (tile.title) ? (
-                                    <GridTile
-                                        key={tile.title}
-                                        title={tile.title}
-                                        titlePosition="bottom"
-                                        subtitle={tile.subtitle}
-                                        titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-                                        cols={tile.cols}
-                                        rows={tile.rows}
-                                        >
-                                        <img src={tile.filtered ? filtered_img: unfiltered_img} style={{height: '100%', width: '100%', objectFit: 'fill'}}/>
-                                    </GridTile>
+                                    (tile.showText) ? (
+                                        <GridTile
+                                            key={id}
+                                            title={tile.title}
+                                            titlePosition="bottom"
+                                            subtitle={tile.subtitle}
+                                            titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                                            cols={tile.cols}
+                                            rows={tile.rows}
+                                            >
+                                            <img src={tile.filtered ? filtered_img: unfiltered_img} style={{height: '100%', width: '100%', objectFit: 'fill'}}/>
+                                        </GridTile>
+                                    ) : (
+                                        <GridTile
+                                            key={id}
+                                            cols={tile.cols}
+                                            rows={tile.rows}
+                                            >
+                                            <img src={tile.filtered ? filtered_img: unfiltered_img} style={{height: '100%', width: '100%', objectFit: 'fill'}}/>
+                                        </GridTile>
+                                    )
+
                                 ): (
                                     <GridTile
+                                        key={id}
                                         cols={tile.cols}
                                         rows={tile.rows}
                                         >
+                                        <img src={leftbar_img}/>
                                     </GridTile>
                                 )
                             ))}
