@@ -10,6 +10,9 @@ import Paper from 'material-ui/Paper';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import FlatButton from 'material-ui/FlatButton';
+
+import Dialog from 'material-ui/Dialog';
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -21,6 +24,10 @@ const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
 var AssignmentSelection = []
 
+const customDialogContentStyle = {
+    width: '100%',
+    maxWidth: 'none',
+};
 class Entry extends React.Component
 {
     constructor(props)
@@ -31,11 +38,18 @@ class Entry extends React.Component
         this.state = {
             data: [],
             assignmentSelect: (assignmentSelect) ? (JSON.parse(assignmentSelect)): [],
-            courseTime: courseTime ? (JSON.parse(courseTime)) : []
+            courseTime: courseTime ? (JSON.parse(courseTime)) : [],
+            dialogOpen: false,
+            dialogMsg: "233"
         }
         this.selectAssignment = this.selectAssignment.bind(this);
         this.cancelSelection = this.cancelSelection.bind(this);
         this.submitSelection = this.submitSelection.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
+    }
+
+    handleDialogClose = () => {
+        this.setState({dialogOpen: false});
     }
 
     cancelSelection = (courseId) => {
@@ -46,30 +60,50 @@ class Entry extends React.Component
 
     selectAssignment = (courseId, assignmentId, selectAssignmentTime, selectTeacherName, avatar, courseTime) => {
         var course_t = this.state.courseTime;
+        var err = false;
+        var errmsg = "";
         courseTime.forEach(function (value, key) {
-            for (var i = 0; i != value.duration; i++)
+            if (!err)
             {
-                if (course_t[value.day][value.start_time + i])
+                for (var i = 0; i != value.duration; i++)
                 {
-                    console.log("时间冲突");
-                    return;
-                }
-            }
-        })
-
-        for (var i = 0; i != 7; i++)
-        {
-            for (var j = 1; j != 13; j++)
-            {
-                if (course_t[i][j])
-                {
-                    if (course_t[i][j].courseId == courseId)
+                    if (course_t[value.day][value.start_time + i])
                     {
-                        console.log("课程重复");
+                        errmsg = "上课时间冲突：" + course_t[value.day][value.start_time + i].title;
+                        err = true;
                         return;
                     }
                 }
             }
+        });
+
+        if (!err)
+        {
+            for (var i = 0; i != 7; i++)
+            {
+                for (var j = 1; j != 13; j++)
+                {
+                    if (course_t[i][j])
+                    {
+                        if (course_t[i][j].courseId == courseId)
+                        {
+                            errmsg = "课程重复, 您已经选上了" + course_t[i][j].title;
+                            err = true;
+                            break;
+                        }
+                    }
+                }
+                if (err)
+                {
+                    break;
+                }
+            };
+        }
+
+        if (err)
+        {
+            this.setState({dialogOpen: true, dialogMsg: errmsg});
+            return;
         }
 
         var dic = this.state.assignmentSelect;
@@ -78,7 +112,7 @@ class Entry extends React.Component
             subtitle: selectTeacherName + " " + selectAssignmentTime,
             avatar: avatar
         }
-        this.setState({assignmentSelect: dic});
+        this.setState({assignmentSelect: dic, dialogOpen: true});
     };
 
 
@@ -173,6 +207,12 @@ class Entry extends React.Component
 
     render()
     {
+        const actions = [
+            <FlatButton
+                label="我知道了"
+                primary={true}
+                onTouchTap={this.handleDialogClose}
+            />];
         return (
             <div>
                 <div className={css.cardContainer}>
@@ -218,9 +258,19 @@ class Entry extends React.Component
                             <ListItem primaryText="Save" leftIcon={<ContentInbox />} onClick={this.saveCourseSelectionLocal}/>
                             <ListItem primaryText="Submit" leftIcon={<ContentSend />} onClick={this.submitSelection}/>
                             <ListItem primaryText="Delete Local" leftIcon={<DeleteIcon />} onClick={this.deleteLocal}/>
-
                         </List>
                     </Paper>
+                </div>
+                <div className="student-dialog">
+                    <Dialog
+                        title="选课失败"
+                        actions={actions}
+                        modal={true}
+                        contentStyle={customDialogContentStyle}
+                        open={this.state.dialogOpen}
+                    >
+                        {this.state.dialogMsg}
+                    </Dialog>
                 </div>
             </div>
         )
@@ -235,7 +285,9 @@ class CourseSelectCard extends React.Component {
             selectTeacherName: ""
         };
         this.handleTouchTap = this.handleTouchTap.bind(this);
-        this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
 
     handleTouchTap = (event) => {
@@ -248,11 +300,25 @@ class CourseSelectCard extends React.Component {
         });
     };
 
-    handleRequestClose = () => {
+    handleClose = () => {
+        this.setState({
+            open: false,
+        });
+    }
+
+    handleSelect = (courseId, assignmentId, selectAssignmentTime, selectTeacherName, avatar, courseTime) => {
+        this.props.selectClick(courseId, assignmentId, selectAssignmentTime, selectTeacherName, avatar, courseTime);
         this.setState({
             open: false,
         });
     };
+
+    handleCancel = (courseId) => {
+        this.props.cancelClick(this.props.course_id);
+        this.setState({
+            open: false,
+        });
+    }
 
     render() {
         return (
@@ -271,7 +337,7 @@ class CourseSelectCard extends React.Component {
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                     targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                    onRequestClose={this.handleRequestClose}
+                    onRequestClose={this.handleClose}
                     >
                     <Menu>
                         {
@@ -279,12 +345,12 @@ class CourseSelectCard extends React.Component {
                                 return (
                                     <MenuItem primaryText={item.name + " (" + item.course_time_str + ")"} key={id} onClick={
                                             (courseId, assignmentId, selectAssignmentTime, selectTeacherName, avatar, courseTime) =>
-                                            this.props.selectClick(this.props.course_id, item.assignmentId, item.course_time_str, item.name, item.avatar, item.course_time)
+                                            this.handleSelect(this.props.course_id, item.assignmentId, item.course_time_str, item.name, item.avatar, item.course_time)
                                         }/>
                                 )
                             }))
                         }
-                        <MenuItem primaryText="取消" onClick={(courseId) => this.props.cancelClick(this.props.course_id)}/>
+                        <MenuItem primaryText="取消" onClick={(courseId) => this.handleCancel(this.props.course_id)}/>
                     </Menu>
                 </Popover>
             </div>

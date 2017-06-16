@@ -172,6 +172,7 @@ class CourseList extends React.Component {
             })
             .then((response) => response.json())
             .then((cb) => {
+                console.log(cb.data);
                 switch (cb.errorCode)
                 {
                     case 200:
