@@ -5,3 +5,10 @@
 .card {
     margin: 20px;
 }
+
+.toolBar {
+    position: fixed;
+    width: 200px;
+    bottom: 5%;
+    right: 3%;
+}

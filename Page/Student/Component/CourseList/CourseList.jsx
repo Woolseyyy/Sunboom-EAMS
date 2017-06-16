@@ -108,7 +108,6 @@ class Entry extends React.Component
     clickOnToggle = () => {
         let leftbar = this.state.grid.leftbar;
         let header = this.state.grid.header;
-        console.log(griddata);
         this.setState({ToggleList: !this.state.ToggleList, grid: {header: header, leftbar: leftbar, data: griddata}})
     }
 
@@ -177,7 +176,6 @@ class CourseList extends React.Component {
                 {
                     case 200:
                         var arrayData = [];
-                        console.log(cb.data);
                         var prefGridData = [[], [], [], [], [], [], []];
                         for (var key in cb.data) {
                             var item = cb.data[key];
@@ -190,7 +188,8 @@ class CourseList extends React.Component {
                                     prefGridData[tmp.day][tmp.startTime + j] = {
                                         title: item.avatarTitle,
                                         subtitle: item.instructorName,
-                                        showText: false
+                                        showText: false,
+                                        courseId: item.courseID
                                     }
                                 }
                                 if (tmp.duration > 0)
@@ -198,7 +197,8 @@ class CourseList extends React.Component {
                                     prefGridData[tmp.day][tmp.startTime + tmp.duration - 1] = {
                                         title: item.avatarTitle,
                                         subtitle: item.instructorName,
-                                        showText: true
+                                        showText: true,
+                                        courseId: item.courseID
                                     }
                                 }
                             }
@@ -214,8 +214,11 @@ class CourseList extends React.Component {
                             dic["course_id"]=item.id;
                             arrayData.push(dic);
                         }
+
+                        localStorage.courseTime = JSON.stringify(prefGridData);
+
                         griddata = [];
-                        for (var i = 0; i < 13; i++)
+                        for (var i = 1; i <= 13; i++)
                         {
                             for (var j = 0; j < 7; j++)
                             {
