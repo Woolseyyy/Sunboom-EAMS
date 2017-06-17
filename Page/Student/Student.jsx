@@ -86,26 +86,13 @@ class Apply extends React.Component {
                 title: "其他申请",
                 data: [
                     {
-                        id: "3140102349",
-                        author: "吴昊潜",
-                        status: "wait",
-                        content: '申请开人工智能',
-                        reason: '偶吼爱他啊'
+                        id: "",
+                        author: "",
+                        status: "",
+                        content: '',
+                        reason: '',
+                        date: ''
                     },
-                    {
-                        id: "3140102349",
-                        author: "吴昊潜",
-                        status: "done",
-                        content: '申请开人工智能',
-                        reason: '偶吼爱他啊'
-                    },
-                    {
-                        id: "3140102349",
-                        author: "吴昊潜",
-                        status: "done",
-                        content: '申请开人工智能',
-                        reason: '偶吼爱他啊'
-                    }
                 ]
             },
             detailOpen: false,

@@ -79,7 +79,7 @@ class Review extends Component {
                         hintText="成绩复议理由(不超过200字)"
                         multiLine={true}
                         fullWidth={true}
-                        rows={20}
+                        rows={17}
                         rowsMax={20}
                     />
                     <div className={css.buttonGroup}>
