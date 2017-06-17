@@ -16,19 +16,54 @@ import CourseCardBundle from "../CourseCard/CourseCard.jsx";
 import ToolFunction from "../ToolFuction/ToolFunction.jsx";
 const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 
-import CourseForum from '../../../../Common/CourseForum/CourseForum.jsx'
+import CourseForum from '../../../../Common/CourseForum/CourseForum.jsx';
+import GradeReview from '../GradeReview/GradeReview.jsx';
 
 class Entry extends React.Component
 {
     constructor(props)
     {
         super(props);
+        this.state = {
+            reviewOpen: false
+        }
+    }
+
+    handleGradeReview = () => {
+        this.setState({reviewOpen: true});
+    }
+
+    closeGradeReview = () => {
+        this.setState({reviewOpen: false});
+    }
+
+    postGradeReview = (msg) => {
+        var data = new FormData();
+        data.append("enrollmentID", this.props.data.enrollmentID);
+        data.append("message", msg);
+        return fetch(localStorage.root_url + 'api/Application/Reevaluate', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token,
+            },
+            body: data
+        })
+        .then((response) => response.json())
+        .then((json) => {});
     }
 
     render() {
         return (
             <div className={css.paperContainer}>
-                <ToolFunction/>
+                <GradeReview
+                    reviewOpen={this.state.reviewOpen}
+                    closeGradeReview={this.closeGradeReview}
+                    studentName={localStorage.studentName}
+                    studentID={localStorage.studentID}
+                    courseName={this.props.data.title}
+                    postGradeReview={this.postGradeReview}
+                />
+                <ToolFunction secondIconClick={this.handleGradeReview} />
                 <Paper zDepth={1}>
                     <div className="student-backto-courselist">
                         <IconButton

@@ -31,7 +31,7 @@ class ToolFunction extends React.Component {
                 </FloatingActionButton>
                 <FloatingActionButton backgroundColor="grey400" mini={true}
                                       className={(this.state.show) ? css.subButtonShow : css.subButtonHidden}
-                                      style={{animationDuration: '1.5s'}}>
+                                      style={{animationDuration: '1.5s'}} onClick={this.props.secondIconClick}>
                     <AssistantPhoto color={grey900}/>
                 </FloatingActionButton>
                 <FloatingActionButton backgroundColor="grey400" mini={true}

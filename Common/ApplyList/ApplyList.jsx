@@ -41,12 +41,12 @@ class ApplyList extends Component {
                                     onTouchTap={() => {
                                         this.props.HandleSelect(index)
                                     }}
-                                    rightIconButton={(data.statue == "done") ?
+                                    rightIconButton={(data.status == "done") ?
                                         <IconButton tooltip="已受理" tooltipPosition="bottom-right">
                                             <Done/>
                                         </IconButton>
                                         :
-                                        <IconButton tooltip="未受理" tooltipPosition="bottom-right">
+                                        <IconButton tooltip="待审核" tooltipPosition="bottom-right">
                                             <WatchLater/>
                                         </IconButton>
                                     }

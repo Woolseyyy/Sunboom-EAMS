@@ -42,12 +42,14 @@ class LoginForm extends Component {
                 switch (cb.errorCode)
                 {
                     case 200:
-                        localStorage.token = cb.data;
+                        localStorage.token = cb.data.token;
                         //continue
                         let url;
                         switch (this.state.value) {
                             case 'student':
                             url = '/#/student';
+                            localStorage.studentName = cb.data.name;
+                            localStorage.studentID = this.refs.usrname.input.value;
                             break;
                             case 'instructor':
                             url = '/#/teacher';

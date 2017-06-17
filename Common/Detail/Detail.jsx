@@ -55,6 +55,14 @@ class Detail extends Component {
                         <td className={css.content}>{this.props.data.content}</td>
                     </tr>
                     <tr className={css.line}>
+                        <td className={css.label}>申请日期</td>
+                        <td className={css.content}>{this.props.data.date}</td>
+                    </tr>
+                    <tr className={css.line}>
+                        <td className={css.label}>申请状态</td>
+                        <td className={css.content}>{this.props.data.status == "done" ? "已受理": "待审核"}</td>
+                    </tr>
+                    <tr className={css.line}>
                         <td className={css.label}>申请理由</td>
                         <td className={css.content}>{this.props.data.reason}</td>
                     </tr>

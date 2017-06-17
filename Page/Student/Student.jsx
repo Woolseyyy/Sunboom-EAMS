@@ -63,7 +63,6 @@ class Entry extends React.Component
         var afterDeviderItems = [
             {"text": "选课", icon:"BookMark"},
             {"text": "其他申请", icon:"BookMark"},
-            {"text": "其他报告", icon:"InfoOutline"}
         ];
         return(
             <div className="background header-bottom-container">
@@ -89,21 +88,21 @@ class Apply extends React.Component {
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "wait",
+                        status: "wait",
                         content: '申请开人工智能',
                         reason: '偶吼爱他啊'
                     },
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "done",
+                        status: "done",
                         content: '申请开人工智能',
                         reason: '偶吼爱他啊'
                     },
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "done",
+                        status: "done",
                         content: '申请开人工智能',
                         reason: '偶吼爱他啊'
                     }
@@ -112,6 +111,40 @@ class Apply extends React.Component {
             detailOpen: false,
             itemID: 0
         };
+    }
+
+    componentDidMount() {
+        return fetch(localStorage.root_url + 'api/Application/MyApplications', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token,
+            },
+        })
+        .then((response) => response.json())
+        .then((cb) => {
+            switch (cb.errorCode)
+            {
+                case 200:
+                    var list = this.state.list;
+                    var data = [];
+                    cb.data.forEach((value, key) => {
+                        data.push({
+                            id: value.issuerID,
+                            author: value.issuerName,
+                            status: value.status,
+                            content: value.shortStr,
+                            reason: value.message,
+                            date: value.date
+                        })
+                    })
+                    list.data = data;
+                    this.setState({list: list});
+                    break;
+                default:
+                    console.log("获取数据库申请列表失败");
+            }
+        });
     }
 
     HandleClose = () => {

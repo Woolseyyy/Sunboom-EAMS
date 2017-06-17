@@ -38,9 +38,10 @@ class Entry extends React.Component
         this.state = {
             data: [],
             assignmentSelect: (assignmentSelect) ? (JSON.parse(assignmentSelect)): [],
+            underReviewCourse: [],
             courseTime: courseTime ? (JSON.parse(courseTime)) : [],
             dialogOpen: false,
-            dialogMsg: "233"
+            dialogMsg: ""
         }
         this.selectAssignment = this.selectAssignment.bind(this);
         this.cancelSelection = this.cancelSelection.bind(this);
@@ -60,6 +61,8 @@ class Entry extends React.Component
 
     selectAssignment = (courseId, assignmentId, selectAssignmentTime, selectTeacherName, avatar, courseTime) => {
         var course_t = this.state.courseTime;
+        var underReviewCourse = this.state.underReviewCourse;
+        console.log(underReviewCourse);
         var err = false;
         var errmsg = "";
         courseTime.forEach(function (value, key) {
@@ -67,15 +70,23 @@ class Entry extends React.Component
             {
                 for (var i = 0; i != value.duration; i++)
                 {
+                    if (underReviewCourse[value.day][value.start_time + i])
+                    {
+                        errmsg = "该时间段有课程待筛选中: " + underReviewCourse[value.day][value.start_time + i].title + " " + underReviewCourse[value.day][value.start_time + i].subtitle;
+                        err = true;
+                        break;
+                    }
                     if (course_t[value.day][value.start_time + i])
                     {
                         errmsg = "上课时间冲突：" + course_t[value.day][value.start_time + i].title;
                         err = true;
-                        return;
+                        break;
                     }
                 }
             }
         });
+
+
 
         if (!err)
         {
@@ -105,21 +116,22 @@ class Entry extends React.Component
             this.setState({dialogOpen: true, dialogMsg: errmsg});
             return;
         }
-
-        var dic = this.state.assignmentSelect;
-        dic[courseId] = {
-            assignmentId: assignmentId,
-            subtitle: selectTeacherName + " " + selectAssignmentTime,
-            avatar: avatar
+        else
+        {
+            var dic = this.state.assignmentSelect;
+            dic[courseId] = {
+                assignmentId: assignmentId,
+                subtitle: selectTeacherName + " " + selectAssignmentTime,
+                avatar: avatar
+            }
+            this.setState({assignmentSelect: dic});
         }
-        this.setState({assignmentSelect: dic, dialogOpen: true});
+
     };
 
 
     saveCourseSelectionLocal = () => {
         localStorage.assignmentSelect = JSON.stringify(this.state.assignmentSelect);
-        console.log(localStorage.assignmentSelect);
-
     };
 
     submitSelection = () => {
@@ -131,7 +143,6 @@ class Entry extends React.Component
                 data.append("list", value.assignmentId);
             }
         });
-        console.log(data);
         return fetch(localStorage.root_url + 'api/Enrollment/EnrollCourses', {
             method: 'POST',
             headers: {
@@ -150,6 +161,39 @@ class Entry extends React.Component
 
     componentDidMount()
     {
+        fetch(localStorage.root_url + 'api/Enrollment/MyUnderReview',
+        {
+            method: 'GET',
+            mode: "cors",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        })
+        .then((response) => response.json())
+        .then((cb) => {
+            switch (cb.errorCode)
+            {
+                case 200:
+                    var underReviewCourse = [[], [], [], [], [], [], []];
+                    cb.data.forEach((value, key) => {
+                        value.courseTime.forEach((value_t, key) => {
+                            for (var i = 0; i != value_t.duration; i++)
+                            {
+                                underReviewCourse[value_t.day][value_t.startTime + i] = {
+                                    title: value.avatarTitle,
+                                    subtitle: value.instructorName,
+                                    courseId: value.courseID
+                                }
+                            }
+                        })
+                    });
+                    this.setState({underReviewCourse: underReviewCourse});
+                    break;
+                default:
+                    console.error("获取未筛选课程失败")
+            }
+        });
+
         return fetch(localStorage.root_url + 'api/Course/Enrollable',
             {
                 method: 'GET',
@@ -219,7 +263,7 @@ class Entry extends React.Component
                     {
                         this.state.data.map((item, id) => {
                             return (this.state.assignmentSelect == null || this.state.assignmentSelect[item.course_id] == null) ? (
-                                <div className={css.card} key={id}>
+                                <div className={css.card}>
                                     <CourseSelectCard
                                         avatar_title={item.avatar_title}
                                         avatar_subtitle={item.avatar_subtitle}
@@ -231,10 +275,11 @@ class Entry extends React.Component
                                         facultyList={item.facultyList}
                                         selectClick={this.selectAssignment}
                                         cancelClick={this.cancelSelection}
+                                        key={id}
                                     />
                                 </div>
                             ) : (
-                                    <div className={css.card} key={id}>
+                                    <div className={css.card}>
                                         <CourseSelectCard
                                             avatar_title={item.avatar_title}
                                             avatar_subtitle={this.state.assignmentSelect[item.course_id].subtitle}
@@ -246,6 +291,7 @@ class Entry extends React.Component
                                             facultyList={item.facultyList}
                                             selectClick={this.selectAssignment}
                                             cancelClick={this.cancelSelection}
+                                            key={id}
                                         />
                                     </div>
                             );
@@ -255,9 +301,9 @@ class Entry extends React.Component
                 <div className={css.toolBar}>
                     <Paper>
                         <List>
-                            <ListItem primaryText="Save" leftIcon={<ContentInbox />} onClick={this.saveCourseSelectionLocal}/>
-                            <ListItem primaryText="Submit" leftIcon={<ContentSend />} onClick={this.submitSelection}/>
-                            <ListItem primaryText="Delete Local" leftIcon={<DeleteIcon />} onClick={this.deleteLocal}/>
+                            <ListItem primaryText="本地保存" leftIcon={<ContentInbox />} onClick={this.saveCourseSelectionLocal}/>
+                            <ListItem primaryText="提交申请" leftIcon={<ContentSend />} onClick={this.submitSelection}/>
+                            <ListItem primaryText="清空本地记录" leftIcon={<DeleteIcon />} onClick={this.deleteLocal}/>
                         </List>
                     </Paper>
                 </div>

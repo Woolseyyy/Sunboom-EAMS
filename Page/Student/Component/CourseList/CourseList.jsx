@@ -31,7 +31,8 @@ class Entry extends React.Component
                 homework_title: "",
                 homework_content: "",
                 homework: [],
-                material: []
+                material: [],
+                enrollmentID: ""
             },
             gridpredata: {
 
@@ -81,6 +82,7 @@ class Entry extends React.Component
                         dic['next_chap_content'] = cb.data.nextChapContent;
                         dic['homework_title'] = cb.data.homeworkTitle;
                         dic['homework_content'] = cb.data.homeworkContent;
+                        dic['enrollmentID'] = e;
 
                         var homework = [];
                         for (var key in cb.data.homeworks) {
@@ -141,7 +143,7 @@ class Entry extends React.Component
                         onClick={this.clickOnToggle}
                         />
                 </div>
-                <div className="junk-name" onChange={this.clickBackCouseList}>
+                <div className="junk-name" onToggle={this.clickBackCouseList}>
                     {this.router()}
                 </div>
             </div>
@@ -172,7 +174,6 @@ class CourseList extends React.Component {
             })
             .then((response) => response.json())
             .then((cb) => {
-                console.log(cb.data);
                 switch (cb.errorCode)
                 {
                     case 200:

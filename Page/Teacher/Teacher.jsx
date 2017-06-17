@@ -66,21 +66,21 @@ class CourseApply extends React.Component {
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "wait",
+                        status: "wait",
                         content: '申请开人工智能',
                         reason: '偶吼爱他啊'
                     },
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "done",
+                        status: "done",
                         content: '申请开人工智能',
                         reason: '偶吼爱他啊'
                     },
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "done",
+                        status: "done",
                         content: '申请开人工智能',
                         reason: '偶吼爱他啊'
                     }
@@ -132,14 +132,14 @@ class SourceApply extends React.Component {
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "wait",
+                        status: "wait",
                         content: '申请开208教室',
                         reason: '偶吼爱他啊'
                     },
                     {
                         id: "3140102349",
                         author: "吴昊潜",
-                        statue: "done",
+                        status: "done",
                         content: '申请保健室两点',
                         reason: '偶吼爱他啊'
                     }
