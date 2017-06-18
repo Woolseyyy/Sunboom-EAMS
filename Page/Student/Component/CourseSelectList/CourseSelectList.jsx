@@ -146,7 +146,7 @@ class Entry extends React.Component
         return fetch(localStorage.root_url + 'api/Enrollment/EnrollCourses', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.token,
+                'Authorization': localStorage.token,
             },
             body: data
         })
@@ -166,7 +166,7 @@ class Entry extends React.Component
             method: 'GET',
             mode: "cors",
             headers: {
-                'Authorization': 'Bearer ' + localStorage.token
+                'Authorization': localStorage.token
             }
         })
         .then((response) => response.json())
@@ -199,7 +199,7 @@ class Entry extends React.Component
                 method: 'GET',
                 mode: "cors",
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.token
+                    'Authorization': localStorage.token
                 }
             })
             .then((response) => response.json())

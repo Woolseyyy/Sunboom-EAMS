@@ -44,7 +44,7 @@ class Entry extends React.Component
         return fetch(localStorage.root_url + 'api/Application/Reevaluate', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.token,
+                'Authorization': localStorage.token,
             },
             body: data
         })

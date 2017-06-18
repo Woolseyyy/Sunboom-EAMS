@@ -42,7 +42,8 @@ class LoginForm extends Component {
                 switch (cb.errorCode)
                 {
                     case 200:
-                        localStorage.token = cb.data.token;
+                        localStorage.token = "Bearer " + cb.data.token;
+                        //console.log(localStorage.token);
                         //continue
                         let url;
                         switch (this.state.value) {

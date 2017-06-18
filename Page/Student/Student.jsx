@@ -106,7 +106,7 @@ class Apply extends React.Component {
             method: 'GET',
             mode: 'cors',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.token,
+                'Authorization': localStorage.token,
             },
         })
         .then((response) => response.json())
