@@ -19,14 +19,42 @@ const CourseCardImgSource = CourseCardBundle.CourseCardImgSource;
 import CourseForum from '../../../../Common/CourseForum/CourseForum.jsx';
 import GradeReview from '../GradeReview/GradeReview.jsx';
 
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+
+
+const customDialogContentStyle = {
+    width: '100%',
+    maxWidth: 'none',
+};
 class Entry extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            reviewOpen: false
+            reviewOpen: false,
+            homeworkID: 1,
+            dialogOpen: false,
+            dialogTitle: "",
+            dialogMsg: ""
         }
+        this.submitHomework = this.submitHomework.bind(this);
+        this.submitLatestHomework = this.submitLatestHomework.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
+    }
+
+    handleDialogClose = () => {
+        this.setState({dialogOpen: false});
+    }
+
+    submitLatestHomework = () => {
+        this.refs.uploadHomeworBrowser.click();
+    }
+
+    submitHomework = (e) => {
+        this.setState({homeworkID: e});
+        this.refs.uploadLatestHomeworBrowser.click();
     }
 
     handleGradeReview = () => {
@@ -53,6 +81,12 @@ class Entry extends React.Component
     }
 
     render() {
+        const actions = [
+            <FlatButton
+                label="我知道了"
+                primary={true}
+                onTouchTap={this.handleDialogClose}
+            />];
         return (
             <div className={css.paperContainer}>
                 <GradeReview
@@ -92,7 +126,17 @@ class Entry extends React.Component
                                 {this.props.data.next_chap_content}
                             </CardText>
                             <CardActions style={{marginLeft: '30px'}}>
-                                <RaisedButton labelColor='#868686' label="课件下载"/>
+                                <RaisedButton labelColor='#868686' label="课件下载"
+                                    onClick={() => {
+                                        if (this.props.data.next_chap_url == null)
+                                        {
+                                            this.setState({dialogOpen: true, dialogMsg: "当前无课件下载", dialogTitle: "课件下载错误"})
+                                        }
+                                        else
+                                        {
+                                            window.open(localStorage.root_url + this.props.data.next_chap_url);
+                                        }
+                                    }}/>
                             </CardActions>
                         </Card>
                     </div>
@@ -107,8 +151,7 @@ class Entry extends React.Component
                                 {this.props.data.homework_content}
                             </CardText>
                             <CardActions style={{marginLeft: '30px', paddingTop: '30px', paddingBottom: '30px'}}>
-                                <RaisedButton labelColor='#868686' label="作业要求下载"/>
-                                <RaisedButton labelColor='#868686' label="作业提交" style={{marginLeft: '20px'}}/>
+                                <RaisedButton labelColor='#868686' label="作业提交" onClick={this.submitLatestHomework}/>
                             </CardActions>
                         </Card>
                     </div>
@@ -138,21 +181,27 @@ class Entry extends React.Component
                                                                     <TableRowColumn style={{width: "10%", paddingLeft: "0px", paddingRight: "0px", color: "#868686"}}>
                                                                         已评分
                                                                         <IconButton iconStyle={{width: "23px", height: "23px"}} style={{border: "0px", padding: "0px", width: "23px", height: "23px", verticalAlign: "middle"}}>
-                                                                            <FileDownload/>
+                                                                            <FileDownload
+                                                                                onClick={() => {
+                                                                                    window.open(localStorage.root_url + item.url)
+                                                                                }}/>
                                                                         </IconButton>
                                                                     </TableRowColumn>
                                                                 ) : (
                                                                     <TableRowColumn style={{width: "10%", paddingLeft: "0px", paddingRight: "0px", color: "#868686"}}>
                                                                         已提交
                                                                         <IconButton iconStyle={{width: "23px", height: "23px"}} style={{border: "0px", padding: "0px", width: "23px", height: "23px", verticalAlign: "middle"}}>
-                                                                            <FileDownload/>
+                                                                            <FileDownload
+                                                                                onClick={() => {
+                                                                                    window.open(localStorage.root_url + item.url)
+                                                                                }}/>
                                                                         </IconButton>
                                                                     </TableRowColumn>
                                                                 )
                                                             ) : (
                                                                 <TableRowColumn style={{width: "10%", paddingLeft: "0px", paddingRight: "0px", color: "#868686"}}>
                                                                     未上传
-                                                                    <IconButton iconStyle={{width: "23px", height: "23px"}} style={{border: "0px", padding: "0px", width: "23px", height: "23px", verticalAlign: "middle"}}>
+                                                                    <IconButton iconStyle={{width: "23px", height: "23px"}} onTouchTap={(e) => this.submitHomework(item.id)} style={{border: "0px", padding: "0px", width: "23px", height: "23px", verticalAlign: "middle"}}>
                                                                         <FileUpload/>
                                                                     </IconButton>
                                                                 </TableRowColumn>
@@ -178,7 +227,17 @@ class Entry extends React.Component
                                                         <TableRowColumn style={{width: "10%", paddingLeft: "0px", paddingRight: "0px", color: "#868686"}}>
                                                             可下载
                                                             <IconButton iconStyle={{width: "23px", height: "23px"}} style={{border: "0px", padding: "0px", width: "23px", height: "23px", verticalAlign: "middle"}}>
-                                                                <FileDownload/>
+                                                                <FileDownload
+                                                                    onClick={() => {
+                                                                        if (this.props.data.next_chap_url == null)
+                                                                        {
+                                                                            this.setState({dialogOpen: true, dialogMsg: "该资料已经下线", dialogTitle: "资料下载错误"})
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            window.open(localStorage.root_url + item.url)
+                                                                        }
+                                                                    }}/>
                                                             </IconButton>
                                                         </TableRowColumn>
                                                     </TableRow>
@@ -191,6 +250,19 @@ class Entry extends React.Component
                         </Paper>
                     </div>
                 </Paper>
+                <div className="info-dialog">
+                    <Dialog
+                        title={this.state.dialogTitle}
+                        actions={actions}
+                        modal={true}
+                        contentStyle={customDialogContentStyle}
+                        open={this.state.dialogOpen}
+                    >
+                        {this.state.dialogMsg}
+                    </Dialog>
+                </div>
+                <input type="file" id="file" ref="uploadHomeworBrowser" style={{display: "none"}} onChange={(files, homeworkID) => this.props.handleSubmitHomework(this.refs.uploadHomeworBrowser.files, this.state.homeworkID)}/>
+                <input type="file" id="file" ref="uploadLatestHomeworBrowser" style={{display: "none"}} onChange={(files) => this.props.handleSubmitLatestHomework(this.refs.uploadLatestHomeworBrowser.files)}/>
             </div>
         );
     }

@@ -32,7 +32,8 @@ class Entry extends React.Component
                 homework_content: "",
                 homework: [],
                 material: [],
-                enrollmentID: ""
+                enrollmentID: "",
+                next_chap_url: "",
             },
             gridpredata: {
 
@@ -48,18 +49,55 @@ class Entry extends React.Component
                     {rows: '1'}
                 ],
                 data: []
-            }
+            },
+            currentSelectCourseID: "",
+            latest_homeworkID: 1
         };
         this.clickOnCourse = this.clickOnCourse.bind(this);
         this.clickOnToggle = this.clickOnToggle.bind(this);
+        this.handleSubmitHomework = this.handleSubmitHomework.bind(this);
     }
 
     clickBackCouseList = () => {
         this.setState({OnCourseList: true});
     }
 
+    handleSubmitHomework = (files, homeworkID) => {
+        if (files.length >= 1)
+        {
+            var data = new FormData();
+            data.append('file', files[0], files[0].name);
+            data.append('id', homeworkID);
+            data.append('solution', "作业已提交");
+
+            fetch(localStorage.root_url + 'api/Homework/Submit', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Authorization': localStorage.token,
+                },
+                body: data
+            })
+            .then((response) => response.json())
+            .then((cb) => {
+                switch (cb.errorCode)
+                {
+                    case 200:
+                        this.clickOnCourse(this.state.currentSelectCourseID);
+                        break;
+                    default:
+                        console.error("图片上传错误");
+                }
+            });
+        }
+    }
+
+    handleSubmitLatestHomework = (files) => {
+        handleSubmitHomework(files, this.state.latest_homeworkID);
+    }
+
     clickOnCourse = (e) => {
-        this.setState({OnCourseList: false});
+        this.setState({OnCourseList: false, currentSelectCourseID: e});
         return fetch(localStorage.root_url + 'api/Enrollment/EnrollmentDetail?id=' + e.toString(),
             {
                 method: 'GET',
@@ -80,8 +118,10 @@ class Entry extends React.Component
                         dic['course_img']=localStorage.root_url+cb.data.courseImg;
                         dic['next_chap_title'] = cb.data.nextChapTitle;
                         dic['next_chap_content'] = cb.data.nextChapContent;
+                        dic['next_chap_url'] = cb.data.nextChapUrl;
                         dic['homework_title'] = cb.data.homeworkTitle;
                         dic['homework_content'] = cb.data.homeworkContent;
+                        dic['latest_homeworkID'] = cb.data.homeworkID;
                         dic['enrollmentID'] = e;
 
                         var homework = [];
@@ -126,7 +166,7 @@ class Entry extends React.Component
             }
             else
             {
-                return <CourseInfo data={this.state.data} clickBackCouseList={this.clickBackCouseList}/>;
+                return <CourseInfo data={this.state.data} clickBackCouseList={this.clickBackCouseList} handleSubmitHomework={this.handleSubmitHomework}/>;
             }
         }
     }
@@ -211,7 +251,16 @@ class CourseList extends React.Component {
                             dic["course_img"] = localStorage.root_url + item.courseImg;
                             dic["course_title"] = item.courseTitle;
                             dic["course_info"] = item.courseInfo;
-                            dic["buttons"] =[{label: '课件', onClick: function(){}}, {label: '作业四', onClick: function(){}}];
+                            dic["buttons"] =[{label: '课件', onClick: function(){
+                                if (item.courseUrl == null)
+                                {
+                                }
+                                else
+                                {
+                                    this.props.handleClick();
+                                    window.open(localStorage.root_url + item.courseUrl);
+                                }
+                            }}];
                             dic["alert_msg"]="";
                             dic["course_id"]=item.id;
                             arrayData.push(dic);

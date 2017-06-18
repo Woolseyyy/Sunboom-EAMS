@@ -40,12 +40,12 @@ class Entry extends React.Component
                     <Profile />
                 </div>
             );
-            case 3: return (
+            case 2: return (
                 <div className="main">
                     <CourseSelectList />
                 </div>
             );
-            case 4: return (
+            case 3: return (
                 <div className="main">
                     <Apply />
                 </div>
@@ -59,7 +59,6 @@ class Entry extends React.Component
         [
             {"text": "课程列表", icon:"BookMark"},
             {"text": "个人信息", icon:"BookMark"},
-            {"text": "已完成课程", icon: "Done"}
         ];
         var afterDeviderItems = [
             {"text": "选课", icon:"BookMark"},
