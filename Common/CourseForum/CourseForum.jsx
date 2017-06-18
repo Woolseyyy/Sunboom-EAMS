@@ -75,7 +75,7 @@ class Entry extends React.Component
                       <Subheader>软件工程</Subheader>
                       {this.state.data.map((item, id) => {
                           return (
-                              <div>
+                              <div key={id}>
                                   <ListItem
                                       leftAvatar={<Avatar src={item.avatar}/>}
                                       primaryText={item.primaryText}

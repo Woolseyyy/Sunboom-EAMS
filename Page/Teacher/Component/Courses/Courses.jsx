@@ -137,10 +137,10 @@ class Homework extends Component{
     constructor(props){
         super(props);
         this.state={
-            modify: false
+            modify: false,
+            modifyBatch: {}
         }
     }
-
     render(){
         return(
             <div className={css.cardContainer}>
@@ -161,7 +161,30 @@ class Homework extends Component{
                             <Toggle
                                 label="修改成绩"
                                 defaultToggled={this.state.modify}
-                                onTouchTap={()=>{let modify=this.state.modify;this.setState({modify:!modify})}}
+                                onTouchTap={() => {
+                                    //submit
+
+
+                                    let modifyBatch = this.state.modifyBatch;
+                                    for (let key in modifyBatch) {
+                                        var formData = new FormData();
+                                        formData.append("id", key);
+                                        formData.append("score", modifyBatch[key]);
+
+                                        fetch(localStorage.root_url + 'api/Homework/EvaluateSubmission',
+                                            {
+                                                method: 'POST',
+                                                headers: {
+                                                    "Authorization": localStorage.token
+                                                },
+                                                body: formData
+                                            });
+                                    }
+
+                                    let modify = this.state.modify;
+                                    this.setState({modify: !modify, modifyBatch: {}})
+                                }
+                                }
                             />
                         </div>
                     </div>
@@ -173,9 +196,22 @@ class Homework extends Component{
                                     this.props.data.list.map((item, index)=>{
                                         return(
                                             <TableRow key={index} displayBorder={false}>
-                                                <TableRowColumn className={css.homeworkId}>{item.id}</TableRowColumn>
+                                                <TableRowColumn
+                                                    className={css.homeworkId}>{item.studentID}</TableRowColumn>
                                                 <TableRowColumn className={css.homeworkName}>{item.name}</TableRowColumn>
-                                                <TableRowColumn className={css.homeworkIcon}><FileDownload/></TableRowColumn>
+                                                <TableRowColumn className={css.homeworkIcon}>
+                                                    {
+                                                        (item.attachment) ?
+                                                            <FileDownload
+                                                                onClick={() => {
+                                                                    window.open(localStorage.root_url + item.attachment)
+                                                                }}
+                                                                className="hover"
+                                                            />
+                                                            : null
+                                                    }
+
+                                                </TableRowColumn>
                                                 <TableRowColumn/>
                                                 <TableRowColumn className={css.homeworkScore}>
                                                     <TextField
@@ -183,7 +219,13 @@ class Homework extends Component{
                                                         inputStyle={{textAlign:"center"}}
                                                         name={"score"+index}
                                                         disabled={!this.state.modify}
-                                                        defaultValue={(item.score==null)?item.score:"未提交"}
+                                                        defaultValue={item.score}
+                                                        hintText="未提交"
+                                                        onChange={(event, value) => {
+                                                            let modifyBatch = this.state.modifyBatch;
+                                                            modifyBatch[item.id] = value;
+                                                            this.setState({modifyBatch: modifyBatch});
+                                                        }}
                                                     />
                                                 </TableRowColumn>
                                             </TableRow>
@@ -243,7 +285,14 @@ class CourseFile extends Component{
                                             <TableRow key={index} displayBorder={false}>
                                                 <TableRowColumn className={css.fileName}>{item.name}</TableRowColumn>
                                                 <TableRowColumn/>
-                                                <TableRowColumn style={{textAlign:"right"}} className={css.fileIcon}><FileDownload/></TableRowColumn>
+                                                <TableRowColumn style={{textAlign: "right"}} className={css.fileIcon}>
+                                                    <FileDownload
+                                                        className="hover"
+                                                        onClick={() => {
+                                                            window.open(localStorage.root_url + item.url)
+                                                        }}
+                                                    />
+                                                </TableRowColumn>
                                             </TableRow>
                                         )
                                     })

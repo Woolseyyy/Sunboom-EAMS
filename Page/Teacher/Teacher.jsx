@@ -64,25 +64,31 @@ class CourseApply extends React.Component {
                 title: "开课申请",
                 data: [
                     {
+                        _id: "",
                         id: "3140102349",
                         author: "吴昊潜",
                         status: "wait",
                         content: '申请开人工智能',
-                        reason: '偶吼爱他啊'
+                        reason: '偶吼爱他啊',
+                        time: ''
                     },
                     {
+                        _id: "",
                         id: "3140102349",
                         author: "吴昊潜",
                         status: "done",
                         content: '申请开人工智能',
-                        reason: '偶吼爱他啊'
+                        reason: '偶吼爱他啊',
+                        time: ''
                     },
                     {
+                        _id: "",
                         id: "3140102349",
                         author: "吴昊潜",
                         status: "done",
                         content: '申请开人工智能',
-                        reason: '偶吼爱他啊'
+                        reason: '偶吼爱他啊',
+                        time: ''
                     }
                 ]
             },

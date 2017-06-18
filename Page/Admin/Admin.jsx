@@ -132,6 +132,10 @@ class Entry extends React.Component{
             ]
         };
     }
+
+    componentDidMount() {
+
+    }
     SelectMenuChange = (index) =>{
         this.setState({selectID : index});
     };
