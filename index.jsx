@@ -52,3 +52,51 @@ ReactDOM.render(
     <Root />,
     document.getElementById("app")
 );
+
+
+//通用方法
+let isArrayLike = (o) => {
+    return !!(o &&                                // o is not null, undefined, etc.
+    typeof o === 'object' &&            // o is an object
+    isFinite(o.length) &&               // o.length is a finite number
+    o.length >= 0 &&                    // o.length is non-negative
+    o.length === Math.floor(o.length) &&  // o.length is an integer
+    o.length < 4294967296);                       // Otherwise it is not
+};
+
+let ArrayLikeParse = (ob) => {
+    let array = [];
+    for (let index in ob) {
+        array.push(ob[index]);
+    }
+    return array;
+};
+
+let obParse = (ob) => {
+    if (typeof(ob) === 'object') {
+        for (let art in ob) {
+            ob[art] = obParse(ob[art]);
+        }
+        if (isArrayLike(ob)) {
+            //console.log(ArrayLikeParse(ob));
+            //console.log(typeof ArrayLikeParse(ob));
+            return ArrayLikeParse(ob);
+        }
+        else {
+            //console.log(ob);
+            let result = {};
+            for (let art in ob) {
+                //console.log(art);
+                result[art] = ob[art];
+            }
+            return result;
+        }
+    }
+    else {
+        return ob;
+    }
+};
+
+window.eams = {
+    obParse: obParse
+};

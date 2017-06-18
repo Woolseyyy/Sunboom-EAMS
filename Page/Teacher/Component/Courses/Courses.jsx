@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import ReactDOM from 'react-dom';
 //var Helmet=require("react-helmet");
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 import css from "./Courses.css";
 import CourseForum from '../../../../Common/CourseForum/CourseForum.jsx'
 
@@ -22,96 +25,31 @@ class Courses extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data:[
-                {
-                    _id: "",
-                    name: "软件工程",
-                    schedule:"周二 9,10 节",
-                    nextChapter:{
-                        title: "CH35 Project Scheduling",
-                        text: "hahhahahahahahahha"
-                    },
-                    homework:{
-                        _id: "",
-                        title:"作业四",
-                        text:"找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小" +
-                        "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐",
-                        list:[
-                            {
-                                _id: "",
-                                id : "3140102349",
-                                name:"吴昊潜",
-                                score: "100",
-                                url: ''
-                            },
-                            {
-                                _id: "",
-                                id : "3140102349",
-                                name:"吴昊潜",
-                                score: null,
-                                url: ''
-                            }
-
-                        ]
-                    },
-                    file: {
-                        list: [
-                            {
-                                name: "第三周：Chap33.pptx",
-                                url: ""
-                            },
-                            {
-                                name: "第二周：Chap33.pptx",
-                                url: ""
-                            }
-                        ]
-                    }
-                },
-                {
-                    name: "软件工程",
-                    schedule: "周二 9,10 节",
-                    nextChapter: {
-                        title: "CH35 Project Scheduling",
-                        text: "hahhahahahahahahha"
-                    },
-                    homework: {
-                        _id: "",
-                        title: "作业四",
-                        text: "找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小" +
-                        "姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐找一个小姐姐",
-                        list: [
-                            {
-                                _id: "",
-                                id: "3140102349",
-                                name: "吴昊潜",
-                                score: "100",
-                                url: ''
-                            },
-                            {
-                                _id: "",
-                                id: "3140102349",
-                                name: "吴昊潜",
-                                score: null,
-                                url: ''
-                            }
-
-                        ]
-                    },
-                    file:{
-                        list:[
-                            {
-                                name:"第三周：Chap33.pptx",
-                                url: ""
-                            },
-                            {
-                                name:"第二周：Chap33.pptx",
-                                url: ""
-                            }
-                        ]
-                    }
-                }
-            ]
+            data: []
         };
+    }
+
+    componentDidMount() {
+        this.getCourseInfo();
+    }
+
+    getCourseInfo() {
+        fetch(localStorage.root_url + 'api/Assignment/MyAssignments',
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": localStorage.token
+                }
+            }
+        )
+            .then((response) => response.json())
+            .then((cb) => {
+                //console.log(cb.data);
+                //console.log(window.eams.obParse(cb.data));
+                let data = window.eams.obParse(cb.data);
+
+                this.setState({data: data})
+            });
     }
     render(){
 
@@ -138,11 +76,18 @@ class Detail extends Component{
     }
 
     render(){
+        let schedule = () => {
+            let result = "";
+            for (let item in this.props.data.schedule) {
+                result += this.props.data.schedule[item].str + "; ";
+            }
+            return result;
+        };
         return(
             <Paper zDepth={1} className={css.detail} onTouchTap={()=>{let open=this.state.open; if(!open){this.setState({open:!open})}}}>
                 <div className={(this.state.open)?css.nameOpen:css.name}>{this.props.data.name}</div>
                 <span className={css.schedule}>
-                    {this.props.data.schedule}
+                    {schedule()}
                 </span>
                 {(!this.state.open) ? null :
                     <FlatButton label="收起" primary={true}
