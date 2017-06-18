@@ -20,6 +20,7 @@ import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
 import {cyan500, cyan700, white} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
+import Dialog from 'material-ui/Dialog';
 
 class Courses extends Component {
     constructor(props) {
@@ -99,6 +100,7 @@ class Detail extends Component{
                 <NextChapter
                     data={this.props.data.nextChapter}
                     state={this.state.open}
+                    assignmentID={this.props.data.id}
                 />
                 {(!this.state.open)?null:
                     <div>
@@ -113,7 +115,99 @@ class Detail extends Component{
 }
 
 class NextChapter extends Component{
+    state = {
+        open: [false, false, false],
+        fileName: '',
+        file: {},
+        coverName: '',
+        cover: {},
+        title: '',
+        description: ''
+    };
+
+    handleOpen = (index) => {
+        let open = this.state.open;
+        open[index] = true;
+        this.setState({open: open});
+    };
+
+    handleClose = (index) => {
+        let open = this.state.open;
+        open[index] = false;
+        this.setState({open: open});
+    };
+
+    handleFileBrowser() {
+        let files = this.refs.fileUploader.files;
+        if (files.length >= 1) {
+            let data = new FormData();
+            data.append('file', files[0], files[0].name);
+
+            fetch(localStorage.root_url + 'api/Account/ChangeAvatar', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Authorization': localStorage.token,
+                },
+                body: data
+            })
+                .then((response) => response.json())
+                .then((cb) => {
+                    switch (cb.errorCode) {
+                        case 200:
+
+                            break;
+                        default:
+
+                    }
+                });
+        }
+    }
+
     render(){
+        let actions = [];
+        actions[0] = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={() => {
+                    this.handleClose(0)
+                }}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={() => {
+                    let files = this.state.file;
+                    let cover = this.state.cover;
+                    let data = new FormData();
+                    let title = this.state.title;
+                    let description = this.state.description;
+
+                    data.append('id', this.props.assignmentID);
+                    data.append('title', title);
+                    data.append('description', description);
+                    (cover.length > 1) ? data.append('cover', cover[0], cover[0].name) : data.append('cover', null);
+                    (files.length > 1) ? data.append('file', file[0], files[0].name) : data.append('files', null);
+
+                    fetch(localStorage.root_url + 'api/Assignment/AddChapter', {
+                        method: 'POST',
+                        mode: "cors",
+                        headers: {
+                            'Authorization': localStorage.token,
+                        },
+                        body: data
+                    }).then((response) => response.json())
+                        .then((cb) => {
+                            //console.log(cb);
+                            window.location.href = window.location.href;
+                        });
+                    this.handleClose(0)
+                }}
+            />,
+        ];
+
         return(
             <div className={(this.props.state)?css.cardContainer:null}>
                 <div className={css.cardName} style={{display:(this.props.state)?'block':'none'}}>下一节课内容</div>
@@ -123,9 +217,95 @@ class NextChapter extends Component{
                         <p className={css.cardP}>{this.props.data.text}</p>
                     </div>
                     <div className={css.buttonGroup}>
-                        <RaisedButton label="新增内容" primary={true}/>
-                        <RaisedButton label="修改信息"/>
-                        <RaisedButton label="上传课件"/>
+                        <RaisedButton label="新增内容" primary={true} onTouchTap={() => {
+                            this.handleOpen(0)
+                        }}/>
+                        <Dialog
+                            title="新增章节"
+                            actions={actions[0]}
+                            modal={false}
+                            open={this.state.open[0]}
+                            onRequestClose={() => {
+                                this.handleClose(0)
+                            }}
+                        >
+                            <TextField
+                                ref="d0Title"
+                                floatingLabelText="章节名称"
+                                value={this.state.title}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({title: val});
+                                    }
+                                }
+                            />
+                            <br/>
+                            <TextField
+                                ref="d0Description"
+                                floatingLabelText="章节介绍"
+                                multiLine={true}
+                                fullWidth={true}
+                                value={this.state.description}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({description: val});
+                                    }
+                                }
+                            />
+                            <table style={{width: "100%"}}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <TextField
+                                            disabled={true}
+                                            value={this.state.coverName}
+                                            fullWidth={true}
+                                        />
+                                    </td>
+                                    <td style={{width: '88px'}}>
+                                        <RaisedButton label="上传封面" secondary={true} onClick={() => {
+                                            this.refs.coverUploader.click();
+                                        }}/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table style={{width: "100%"}}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <TextField
+                                            disabled={true}
+                                            value={this.state.fileName}
+                                            fullWidth={true}
+                                        />
+                                    </td>
+                                    <td style={{width: '88px'}}>
+                                        <RaisedButton label="上传课件" primary={true} onClick={() => {
+                                            this.refs.fileUploader.click();
+                                        }}/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </Dialog>
+                        <RaisedButton label="修改信息" onTouchTap={() => {
+                            this.handleOpen(1)
+                        }}/>
+                        <RaisedButton label="上传课件" onTouchTap={() => {
+                            this.handleOpen(2)
+                        }}/>
+                        <input type="file" id="d0FileUploader" ref="fileUploader" style={{display: "none"}}
+                               onChange={() => {
+                                   let files = this.refs.fileUploader.files;
+                                   this.setState({file: files, fileName: files[0].name})
+                               }}/>
+                        <input type="file" id="d0CoverUploader" ref="coverUploader" accept=".jpg, .jpeg, .png, .bmp"
+                               style={{display: "none"}}
+                               onChange={() => {
+                                   let files = this.refs.coverUploader.files;
+                                   this.setState({cover: files, coverName: files[0].name})
+                               }}/>
                     </div>
                 </Paper>
             </div>
