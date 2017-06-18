@@ -97,6 +97,30 @@ class CourseApply extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.getApplyInfo();
+    }
+
+    getApplyInfo() {
+        fetch(localStorage.root_url + 'api/Application/MyApplications'
+            + '?type=' + '开课申请',
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": localStorage.token
+                }
+            }
+        )
+            .then((response) => response.json())
+            .then((cb) => {
+                //console.log(cb.data);
+                //console.log(window.eams.obParse(cb.data));
+                let data = window.eams.obParse(cb.data);
+
+                this.setState({list: data})
+            });
+    }
+
     HandleClose = () => {
         this.setState({
             detailOpen: false
@@ -156,6 +180,29 @@ class SourceApply extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.getApplyInfo();
+    }
+
+    getApplyInfo() {
+        fetch(localStorage.root_url + 'api/Application/MyApplications'
+            + '?type=' + '教学资源申请',
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": localStorage.token
+                }
+            }
+        )
+            .then((response) => response.json())
+            .then((cb) => {
+                //console.log(cb.data);
+                //console.log(window.eams.obParse(cb.data));
+                let data = window.eams.obParse(cb.data);
+
+                this.setState({list: data})
+            });
+    }
     HandleClose = () => {
         this.setState({
             detailOpen: false
