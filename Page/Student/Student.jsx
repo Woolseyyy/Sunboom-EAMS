@@ -1,15 +1,16 @@
 var React = require("react");
 var css = require("./Student.css");
 
-import Slider from "../../Common/Slider/Slider.jsx"
-import Header from "../../Common/Header/Header.jsx"
-import CourseList from "./Component/CourseList/CourseList.jsx"
-import CourseSelectList from "./Component/CourseSelectList/CourseSelectList.jsx"
-import CourseInfo from "./Component/CourseInfo/CourseInfo.jsx"
+import Slider from "../../Common/Slider/Slider.jsx";
+import Header from "../../Common/Header/Header.jsx";
+import CourseList from "./Component/CourseList/CourseList.jsx";
+import CourseSelectList from "./Component/CourseSelectList/CourseSelectList.jsx";
+import CourseInfo from "./Component/CourseInfo/CourseInfo.jsx";
 
-import CourseForumDetail from "../../Common/CourseForumDetail/CourseForumDetail.jsx"
-import ApplyList from "../../Common/ApplyList/ApplyList.jsx"
-import Detail from "../../Common/Detail/Detail.jsx"
+import CourseForumDetail from "../../Common/CourseForumDetail/CourseForumDetail.jsx";
+import ApplyList from "../../Common/ApplyList/ApplyList.jsx";
+import Detail from "../../Common/Detail/Detail.jsx";
+import Profile from "./Component/Profile/Profile.jsx";
 
 class Entry extends React.Component
 {
@@ -36,7 +37,7 @@ class Entry extends React.Component
             );
             case 1: return (
                 <div className="main">
-
+                    <Profile />
                 </div>
             );
             case 3: return (
