@@ -38,10 +38,10 @@ class Entry extends Component
         super(props);
         this.state={
             photo: "",
-            gender: "male",
-            name: "刘洋",
-            major: "计算机科学与技术",
-            id: "3140103304",
+            gender: "",
+            name: "",
+            major: "",
+            id: "",
             dialogOpen: false,
             uploadedFile: "",
         };
@@ -79,7 +79,7 @@ class Entry extends Component
             method: 'POST',
             mode: 'cors',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.token,
+                'Authorization': localStorage.token,
             },
             body: fd
         })
@@ -102,7 +102,7 @@ class Entry extends Component
             method: 'GET',
             mode: 'cors',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.token,
+                'Authorization': localStorage.token,
             },
         })
         .then((response) => response.json())
@@ -133,7 +133,7 @@ class Entry extends Component
                 method: 'POST',
                 mode: 'cors',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.token,
+                    'Authorization': localStorage.token,
                 },
                 body: data
             })
