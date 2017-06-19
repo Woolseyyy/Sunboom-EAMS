@@ -137,33 +137,6 @@ class NextChapter extends Component{
         this.setState({open: open});
     };
 
-    handleFileBrowser() {
-        let files = this.refs.fileUploader.files;
-        if (files.length >= 1) {
-            let data = new FormData();
-            data.append('file', files[0], files[0].name);
-
-            fetch(localStorage.root_url + 'api/Account/ChangeAvatar', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Authorization': localStorage.token,
-                },
-                body: data
-            })
-                .then((response) => response.json())
-                .then((cb) => {
-                    switch (cb.errorCode) {
-                        case 200:
-
-                            break;
-                        default:
-
-                    }
-                });
-        }
-    }
-
     render(){
         let actions = [];
         actions[0] = [
@@ -188,8 +161,8 @@ class NextChapter extends Component{
                     data.append('id', this.props.assignmentID);
                     data.append('title', title);
                     data.append('description', description);
-                    (cover.length > 1) ? data.append('cover', cover[0], cover[0].name) : data.append('cover', null);
-                    (files.length > 1) ? data.append('file', file[0], files[0].name) : data.append('files', null);
+                    (cover.length > 0) ? data.append('cover', cover[0]) : data.append('cover', null);
+                    (files.length > 0) ? data.append('file', files[0]) : data.append('files', null);
 
                     fetch(localStorage.root_url + 'api/Assignment/AddChapter', {
                         method: 'POST',
@@ -205,8 +178,86 @@ class NextChapter extends Component{
                         });
                     this.handleClose(0)
                 }}
-            />,
+            />
         ];
+
+        actions[1] = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={() => {
+                    this.handleClose(1)
+                }}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={() => {
+                    let cover = this.state.cover;
+                    let data = new FormData();
+                    let title = this.state.title;
+                    let description = this.state.description;
+
+                    data.append('id', this.props.data.id);
+                    data.append('title', title);
+                    data.append('description', description);
+                    (cover.length > 0) ? data.append('cover', cover[0]) : data.append('cover', null);
+
+                    fetch(localStorage.root_url + 'api/Assignment/EditChapter', {
+                        method: 'POST',
+                        mode: "cors",
+                        headers: {
+                            'Authorization': localStorage.token,
+                        },
+                        body: data
+                    }).then((response) => response.json())
+                        .then((cb) => {
+                            //console.log(cb);
+                            window.location.href = window.location.href;
+                        });
+                    this.handleClose(1)
+                }}
+            />
+        ];
+
+        actions[2] = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={() => {
+                    this.handleClose(2)
+                }}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={() => {
+                    let data = new FormData();
+                    let files = this.state.file;
+
+                    data.append('id', this.props.data.id);
+                    (files.length > 0) ? data.append('file', files[0]) : data.append('files', null);
+                    console.log(files[0]);
+                    fetch(localStorage.root_url + 'api/Assignment/ChangeFile', {
+                        method: 'POST',
+                        mode: "cors",
+                        headers: {
+                            'Authorization': localStorage.token,
+                        },
+                        body: data
+                    }).then((response) => response.json())
+                        .then((cb) => {
+                            //console.log(cb);
+                            window.location.href = window.location.href;
+                        });
+                    this.handleClose(2)
+                }}
+            />
+        ];
+
+
 
         return(
             <div className={(this.props.state)?css.cardContainer:null}>
@@ -219,6 +270,12 @@ class NextChapter extends Component{
                     <div className={css.buttonGroup}>
                         <RaisedButton label="新增内容" primary={true} onTouchTap={() => {
                             this.handleOpen(0)
+                        }}/>
+                        <RaisedButton label="修改信息" onTouchTap={() => {
+                            this.handleOpen(1)
+                        }}/>
+                        <RaisedButton label="上传课件" onTouchTap={() => {
+                            this.handleOpen(2)
                         }}/>
                         <Dialog
                             title="新增章节"
@@ -289,18 +346,91 @@ class NextChapter extends Component{
                                 </tbody>
                             </table>
                         </Dialog>
-                        <RaisedButton label="修改信息" onTouchTap={() => {
-                            this.handleOpen(1)
-                        }}/>
-                        <RaisedButton label="上传课件" onTouchTap={() => {
-                            this.handleOpen(2)
-                        }}/>
-                        <input type="file" id="d0FileUploader" ref="fileUploader" style={{display: "none"}}
+                        <Dialog
+                            title="修改信息"
+                            actions={actions[1]}
+                            modal={false}
+                            open={this.state.open[1]}
+                            onRequestClose={() => {
+                                this.handleClose(1)
+                            }}
+                        >
+                            <TextField
+                                ref="d1Title"
+                                floatingLabelText="章节名称"
+                                value={(this.state.title) ? this.state.title : this.props.data.title}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({title: val});
+                                    }
+                                }
+                            />
+                            <br/>
+                            <TextField
+                                ref="d1Description"
+                                floatingLabelText="章节介绍"
+                                multiLine={true}
+                                fullWidth={true}
+                                value={(this.state.description) ? this.state.description : this.props.data.text}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({description: val});
+                                    }
+                                }
+                            />
+                            <table style={{width: "100%"}}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <TextField
+                                            disabled={true}
+                                            value={this.state.coverName}
+                                            fullWidth={true}
+                                        />
+                                    </td>
+                                    <td style={{width: '88px'}}>
+                                        <RaisedButton label="上传封面" secondary={true} onClick={() => {
+                                            this.refs.coverUploader.click();
+                                        }}/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </Dialog>
+                        <Dialog
+                            title="上传课件"
+                            actions={actions[2]}
+                            modal={false}
+                            open={this.state.open[2]}
+                            onRequestClose={() => {
+                                this.handleClose(2)
+                            }}
+                        >
+                            <table style={{width: "100%"}}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <TextField
+                                            disabled={true}
+                                            value={this.state.fileName}
+                                            fullWidth={true}
+                                        />
+                                    </td>
+                                    <td style={{width: '88px'}}>
+                                        <RaisedButton label="上传课件" primary={true} onClick={() => {
+                                            this.refs.fileUploader.click();
+                                        }}/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </Dialog>
+                        <input type="file" id="FileUploader" ref="fileUploader" style={{display: "none"}}
                                onChange={() => {
                                    let files = this.refs.fileUploader.files;
                                    this.setState({file: files, fileName: files[0].name})
                                }}/>
-                        <input type="file" id="d0CoverUploader" ref="coverUploader" accept=".jpg, .jpeg, .png, .bmp"
+                        <input type="file" id="CoverUploader" ref="coverUploader" accept=".jpg, .jpeg, .png, .bmp"
                                style={{display: "none"}}
                                onChange={() => {
                                    let files = this.refs.coverUploader.files;
