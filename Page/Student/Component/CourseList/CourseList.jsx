@@ -34,6 +34,7 @@ class Entry extends React.Component
                 material: [],
                 enrollmentID: "",
                 next_chap_url: "",
+                latest_homeworkID: 1
             },
             gridpredata: {
 
@@ -51,11 +52,11 @@ class Entry extends React.Component
                 data: []
             },
             currentSelectCourseID: "",
-            latest_homeworkID: 1
         };
         this.clickOnCourse = this.clickOnCourse.bind(this);
         this.clickOnToggle = this.clickOnToggle.bind(this);
         this.handleSubmitHomework = this.handleSubmitHomework.bind(this);
+        this.handleSubmitLatestHomework = this.handleSubmitLatestHomework.bind(this);
     }
 
     clickBackCouseList = () => {
@@ -83,6 +84,7 @@ class Entry extends React.Component
                 switch (cb.errorCode)
                 {
                     case 200:
+                        console.log("上传成功");
                         this.clickOnCourse(this.state.currentSelectCourseID);
                         break;
                     default:
@@ -93,7 +95,7 @@ class Entry extends React.Component
     }
 
     handleSubmitLatestHomework = (files) => {
-        handleSubmitHomework(files, this.state.latest_homeworkID);
+        this.handleSubmitHomework(files, this.state.data.latest_homeworkID);
     }
 
     clickOnCourse = (e) => {
@@ -166,7 +168,7 @@ class Entry extends React.Component
             }
             else
             {
-                return <CourseInfo data={this.state.data} clickBackCouseList={this.clickBackCouseList} handleSubmitHomework={this.handleSubmitHomework}/>;
+                return <CourseInfo data={this.state.data} clickBackCouseList={this.clickBackCouseList} handleSubmitHomework={this.handleSubmitHomework} handleSubmitLatestHomework={this.handleSubmitLatestHomework}/>;
             }
         }
     }

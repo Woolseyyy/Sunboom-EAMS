@@ -49,12 +49,12 @@ class Entry extends React.Component
     }
 
     submitLatestHomework = () => {
-        this.refs.uploadHomeworBrowser.click();
+        this.refs.uploadLatestHomeworkBrowser.click();
     }
 
     submitHomework = (e) => {
         this.setState({homeworkID: e});
-        this.refs.uploadLatestHomeworBrowser.click();
+        this.refs.uploadHomeworkBrowser.click();
     }
 
     handleGradeReview = () => {
@@ -140,7 +140,7 @@ class Entry extends React.Component
                             </CardActions>
                         </Card>
                     </div>
-                    <input className={css.hint} type="text" value="未提交作业" readOnly='true'/>
+                    <input className={css.hint} type="text" value="最近一次作业" readOnly='true'/>
                     <div className="student-courseinfo-homework">
                         <Card className={css.homework}>
                             <CardTitle title={this.props.data.homework_title}
@@ -261,8 +261,8 @@ class Entry extends React.Component
                         {this.state.dialogMsg}
                     </Dialog>
                 </div>
-                <input type="file" id="file" ref="uploadHomeworBrowser" style={{display: "none"}} onChange={(files, homeworkID) => this.props.handleSubmitHomework(this.refs.uploadHomeworBrowser.files, this.state.homeworkID)}/>
-                <input type="file" id="file" ref="uploadLatestHomeworBrowser" style={{display: "none"}} onChange={(files) => this.props.handleSubmitLatestHomework(this.refs.uploadLatestHomeworBrowser.files)}/>
+                <input type="file" id="file" ref="uploadHomeworkBrowser" style={{display: "none"}} onChange={(files, homeworkID) => this.props.handleSubmitHomework(this.refs.uploadHomeworkBrowser.files, this.state.homeworkID)}/>
+                <input type="file" id="file" ref="uploadLatestHomeworkBrowser" style={{display: "none"}} onChange={(files) => this.props.handleSubmitLatestHomework(this.refs.uploadLatestHomeworkBrowser.files)}/>
             </div>
         );
     }
