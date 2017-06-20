@@ -140,7 +140,7 @@ class Entry extends React.Component
                             </CardActions>
                         </Card>
                     </div>
-                    <input className={css.hint} type="text" value="未提交作业" readOnly='true'/>
+                    <input className={css.hint} type="text" value="最近一次作业" readOnly='true'/>
                     <div className="student-courseinfo-homework">
                         <Card className={css.homework}>
                             <CardTitle title={this.props.data.homework_title}
