@@ -123,7 +123,8 @@ class LoginForm extends Component {
                     <MenuItem value={'admin'} primaryText="管理员"/>
                 </SelectField>
                 <div className="form-field">
-                    <TextField ref='psd' hintText="请输入密码" floatingLabelText="请输入密码" style={{width: '100%', marginBottom:'16px'}}/>
+                    <TextField type="password" ref='psd' hintText="请输入密码" floatingLabelText="请输入密码"
+                               style={{width: '100%', marginBottom: '16px'}}/>
                 </div>
                     <div className="form-submit">
                         <RaisedButton
