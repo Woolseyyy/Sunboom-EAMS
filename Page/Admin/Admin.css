@@ -2,6 +2,55 @@
 
 }
 
+.inline {
+    display: inline-block;
+}
+
+.cardContainer {
+    margin: 40px 0;
+    padding: 20px 35px;
+}
+
+.cardName {
+    font-size: 18px;
+    color: #757575;
+    margin: 10px;
+    transition: 1s;
+}
+
+.cardClose {
+    padding: 0;
+    transition: 1s;
+}
+
+.cardTitle {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.87);
+    line-height: 24px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.cardP {
+    font-size: 14px;
+    color: #000000;
+    line-height: 16px;
+    margin: 10px 0;
+}
+
+.cardTitleButton {
+    position: absolute;
+    right: 0;
+    width: 120px;
+    margin: 10px 0;
+}
+
+.listTableContainer {
+    height: 350px;
+    overflow: auto;
+}
+
+
 @media screen and (max-width: 992px){
     .background{
         display: flex;
