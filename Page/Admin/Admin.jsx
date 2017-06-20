@@ -221,29 +221,16 @@ class Assignment extends Component {
             modifyBatch: {},
             startFilterCB: {},
             openAlert: false,
-            assignment: [
-                {
-                    id: 1,
-                    teacher: '李玺',
-                    name: '人工智能',
-                    volume: '30'
-                },
-                {
-                    id: 2,
-                    teacher: '许威威',
-                    name: '三维重建',
-                    volume: '20'
-                },
-            ]
+            assignment: []
         }
     }
 
     componentDidMount() {
-        //this.getAssignmentInfo();
+        this.getAssignmentInfo();
     }
 
     getAssignmentInfo() {
-        fetch(localStorage.root_url + 'api/Assignment/AllAssignment',
+        fetch(localStorage.root_url + 'api/Assignment/AllAssignments',
             {
                 method: "GET",
                 headers: {
@@ -338,12 +325,12 @@ class Assignment extends Component {
                             label="修改容量"
                             defaultToggled={this.state.modify}
                             onTouchTap={() => {
-                                //submit
-                                let modifyBatch = this.state.modifyBatch;
-                                for (let key in modifyBatch) {
-                                    var formData = new FormData();
-                                    formData.append("id", key);
-                                    formData.append("volume", modifyBatch[key]);
+                                if (this.state.modify) {
+                                    //submit
+                                    let form = new FormData();
+                                    let modifyBatch = JSON.stringify(this.state.modifyBatch);
+                                    form.append('data', modifyBatch);
+                                    console.log(modifyBatch);
 
                                     fetch(localStorage.root_url + 'api/Enrollment/SetEnrollable',
                                         {
@@ -351,7 +338,7 @@ class Assignment extends Component {
                                             headers: {
                                                 "Authorization": localStorage.token
                                             },
-                                            body: formData
+                                            body: form
                                         });
                                 }
 
@@ -371,8 +358,9 @@ class Assignment extends Component {
                                     return (
                                         <TableRow key={index} displayBorder={false}>
                                             <TableRowColumn style={{width: '80px'}}>{item.id}</TableRowColumn>
-                                            <TableRowColumn style={{width: '80px'}}>{item.name}</TableRowColumn>
-                                            <TableRowColumn style={{width: '60px'}}>{item.teacher}</TableRowColumn>
+                                            <TableRowColumn style={{width: '80px'}}>{item.courseName}</TableRowColumn>
+                                            <TableRowColumn
+                                                style={{width: '60px'}}>{item.instructorName}</TableRowColumn>
                                             <TableRowColumn/>
                                             <TableRowColumn style={{width: '50px'}}>
                                                 <TextField
@@ -380,7 +368,7 @@ class Assignment extends Component {
                                                     inputStyle={{textAlign: "center"}}
                                                     name={"score" + index}
                                                     disabled={!this.state.modify}
-                                                    defaultValue={item.volume}
+                                                    defaultValue={item.enrollable}
                                                     onChange={(event, value) => {
                                                         let modifyBatch = this.state.modifyBatch;
                                                         modifyBatch[item.id] = value;
