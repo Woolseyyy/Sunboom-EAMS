@@ -55,8 +55,6 @@ class CourseCard extends Component
                             })
                         ) : (<div></div>)
                     }
-                    <input type="text" id="text" value={this.props.alert_msg} readOnly='true'
-                    style={{border: '0px', color: 'red', fontWeight: 'bold', marginLeft: '30'}}/>
                 </CardActions>
             </Card>
         );
