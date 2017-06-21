@@ -6,6 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import {grey900} from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
 
 class Header extends Component{
     constructor(props) {
@@ -35,6 +36,9 @@ class Header extends Component{
                 titleStyle={titleStyle}
                 iconElementLeft = {<IconButton><NavigationMenu color={grey900}/></IconButton>}
                 iconStyleLeft = {{display :"none"}}
+                iconElementRight={<FlatButton label="退出" secondary={true} onTouchTap={() => {
+                    window.location = "#/";
+                }}/>}
             />
         )
     }
