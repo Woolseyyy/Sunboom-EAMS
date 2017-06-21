@@ -101,7 +101,7 @@ class CourseApply extends React.Component {
     }
 
     componentDidMount() {
-        this.getApplyInfo();
+        //this.getApplyInfo();
     }
 
     getApplyInfo() {

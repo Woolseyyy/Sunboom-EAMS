@@ -21,6 +21,8 @@ import {cyan500, cyan700, white} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
+import DatePicker from 'material-ui/DatePicker';
+
 
 class Courses extends Component {
     constructor(props) {
@@ -104,7 +106,7 @@ class Detail extends Component{
                 />
                 {(!this.state.open)?null:
                     <div>
-                        <Homework data={this.props.data.homework}/>
+                        <Homework data={this.props.data.homework} assignmentID={this.props.data.id}/>
                         <CourseFile data={this.props.data.file}/>
                         <Forumn/>
                     </div>
@@ -174,7 +176,7 @@ class NextChapter extends Component{
                     }).then((response) => response.json())
                         .then((cb) => {
                             //console.log(cb);
-                            window.location.href = window.location.href;
+                            location.reload();
                         });
                     this.handleClose(0)
                 }}
@@ -214,7 +216,7 @@ class NextChapter extends Component{
                     }).then((response) => response.json())
                         .then((cb) => {
                             //console.log(cb);
-                            window.location.href = window.location.href;
+                            location.reload();
                         });
                     this.handleClose(1)
                 }}
@@ -250,7 +252,7 @@ class NextChapter extends Component{
                     }).then((response) => response.json())
                         .then((cb) => {
                             //console.log(cb);
-                            window.location.href = window.location.href;
+                            location.reload();
                         });
                     this.handleClose(2)
                 }}
@@ -446,12 +448,134 @@ class NextChapter extends Component{
 class Homework extends Component{
     constructor(props){
         super(props);
-        this.state={
-            modify: false,
-            modifyBatch: {}
-        }
+
+        this.state = {
+            open: [false, false],
+            title: '',
+            description: '',
+            date: null
+        };
     }
+
+    handleOpen = (index) => {
+        let open = this.state.open;
+        open[index] = true;
+        this.setState({open: open});
+    };
+
+    handleClose = (index) => {
+        let open = this.state.open;
+        open[index] = false;
+        this.setState({open: open});
+    };
     render(){
+        let actions = [];
+        actions[0] = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={() => {
+                    this.handleClose(0)
+                }}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={() => {
+                    let date;
+
+                    if (this.state.date === null) {
+                        date = new Date();
+                        date.setDate(date.getDate() + 1);
+                    }
+                    else {
+                        date = this.state.date;
+                    }
+
+
+                    let data = new FormData();
+                    let title = this.state.title;
+                    let dueDate = date.toISOString();
+                    let description = this.state.description;
+
+                    data.append('assignmentID', this.props.assignmentID);
+                    data.append('title', title);
+                    data.append('description', description);
+                    data.append('dueDate', dueDate);
+                    console.log("send");
+
+                    fetch(localStorage.root_url + 'api/Homework/AddHomework', {
+                        method: 'POST',
+                        mode: "cors",
+                        headers: {
+                            'Authorization': localStorage.token,
+                        },
+                        body: data
+                    }).then((response) => response.json())
+                        .then((cb) => {
+                            console.log("receive");
+                            console.log(cb);
+                            location.reload();
+                        });
+                    this.handleClose(0)
+
+                }}
+            />
+        ];
+        actions[1] = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={() => {
+                    this.handleClose(1)
+                }}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={() => {
+                    let date;
+
+                    if (this.state.date === null) {
+                        date = new Date();
+                        date.setDate(date.getDate() + 1);
+                    }
+                    else {
+                        date = this.state.date;
+                    }
+
+
+                    let data = new FormData();
+                    let title = this.state.title;
+                    let dueDate = date.toISOString();
+                    let description = this.state.description;
+
+
+                    data.append('homeworkID', this.props.data.id);
+                    data.append('title', title);
+                    data.append('description', description);
+                    data.append('dueDate', dueDate);
+                    console.log("send");
+
+                    fetch(localStorage.root_url + 'api/Homework/EditHomework', {
+                        method: 'POST',
+                        mode: "cors",
+                        headers: {
+                            'Authorization': localStorage.token,
+                        },
+                        body: data
+                    }).then((response) => response.json())
+                        .then((cb) => {
+                            console.log("receive");
+                            console.log(cb);
+                            location.reload();
+                        });
+                    this.handleClose(1)
+                }}
+            />
+        ];
         return(
             <div className={css.cardContainer}>
                 <div className={css.cardName}>最近作业</div>
@@ -461,9 +585,99 @@ class Homework extends Component{
                         <p className={css.cardP}>{this.props.data.text}</p>
                     </div>
                     <div className={css.buttonGroup}>
-                        <RaisedButton label="新增作业" primary={true}/>
-                        <RaisedButton label="作业要求修改"/>
-                        <RaisedButton label="作业打包下载"/>
+                        <RaisedButton label="新增作业" primary={true} onTouchTap={() => {
+                            this.handleOpen(0)
+                        }}/>
+                        <RaisedButton label="作业要求修改" onTouchTap={() => {
+                            this.handleOpen(1)
+                        }}/>
+                        <Dialog
+                            title="新增作业"
+                            actions={actions[0]}
+                            modal={false}
+                            open={this.state.open[0]}
+                            onRequestClose={() => {
+                                this.handleClose(0)
+                            }}
+                        >
+                            <TextField
+                                ref="d0Title"
+                                floatingLabelText="作业名称"
+                                value={this.state.title}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({title: val});
+                                    }
+                                }
+                            />
+                            <br/>
+                            <TextField
+                                ref="d0Description"
+                                floatingLabelText="作业介绍"
+                                multiLine={true}
+                                fullWidth={true}
+                                value={this.state.description}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({description: val});
+                                    }
+                                }
+                            />
+                            <DatePicker hintText="截止日期" mode="landscape"
+                                        value={this.state.date}
+                                        onChange={(n, date) => {
+                                            this.setState({date: date});
+                                        }}
+                                        shouldDisableDate={(date) => {
+                                            let now = new Date();
+                                            return date <= now;
+                                        }}
+                            />
+                        </Dialog>
+                        <Dialog
+                            title="修改作业"
+                            actions={actions[1]}
+                            modal={false}
+                            open={this.state.open[1]}
+                            onRequestClose={() => {
+                                this.handleClose(1)
+                            }}
+                        >
+                            <TextField
+                                ref="d1Title"
+                                floatingLabelText="作业名称"
+                                value={(this.state.title) ? this.state.title : this.props.data.title}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({title: val});
+                                    }
+                                }
+                            />
+                            <br/>
+                            <TextField
+                                ref="d1Description"
+                                floatingLabelText="作业介绍"
+                                multiLine={true}
+                                fullWidth={true}
+                                value={(this.state.description) ? this.state.description : this.props.data.text}
+                                onChange={
+                                    (ob, val) => {
+                                        this.setState({description: val});
+                                    }
+                                }
+                            />
+                            <DatePicker hintText="截止日期" mode="landscape"
+                                        value={this.state.date}
+                                        onChange={(n, date) => {
+                                            this.setState({date: date});
+                                        }}
+                                        shouldDisableDate={(date) => {
+                                            let now = new Date();
+                                            return date <= now;
+                                        }}
+                            />
+                        </Dialog>
+
                     </div>
                     <div style={{position:"relative"}}>
                         <div className={css.cardTitle+" "+css.inline}>作业情况</div>
