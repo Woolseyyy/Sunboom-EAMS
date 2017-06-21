@@ -8,6 +8,7 @@ import Detail from "../../Common/Detail/Detail.jsx";
 
 import Slider from "../../Common/Slider/Slider.jsx";
 import Header from "../../Common/Header/Header.jsx"
+import Profile from "./Component/Profile/Profile.jsx";
 
 //material-ui
 import Paper from 'material-ui/Paper';
@@ -26,6 +27,8 @@ class Teacher extends React.Component {
         switch (this.state.selectID) {
             case 0:
                 return <Courses/>;
+            case 1:
+                return <Profile/>;
             case 2:
                 return <CourseApply/>;
             case 3:

@@ -1,0 +1,15 @@
+.profilePaper {
+    margin-left: 20px;
+    width: 80%;
+}
+
+.basicInfo {
+    float: left;
+    margin-top: 10px;
+    margin-left: 40px;
+}
+
+.photo {
+    float: left;
+    max-width: 250px;
+}
